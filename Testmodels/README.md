@@ -64,3 +64,31 @@ jupyter lab
 
 ## Guide to the local models
 
+
+### Descargar ollama en Web
+
+```bash
+https://ollama.com/download
+```
+
+### Listar los modelos
+
+```bash
+ollama list
+```
+
+
+### Desacrgar el modelo de Ollama
+
+```bash
+ollama pull "nombre modelo" 
+```
+
+### Correr modelo especifico
+
+```bash
+ollama run "nombre modelo" 
+```
+
+
+
