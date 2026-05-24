@@ -1,10 +1,13 @@
 import os
+
 from dotenv import load_dotenv
+load_dotenv()
 
-def get_GPT_token():
-    """
 
-    """
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b")
+OPEN_AI_MODEL = os.getenv("OPEN_AI_MODEL", "gpt-3.5-turbo")
 
-    load_dotenv()
-    return os.getenv("OPENAI_API_KEY")
+
+
+
