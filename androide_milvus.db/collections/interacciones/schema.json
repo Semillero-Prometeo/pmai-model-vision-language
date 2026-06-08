@@ -1,5 +1,5 @@
 {
-  "collection_name": "conocimiento",
+  "collection_name": "interacciones",
   "enable_dynamic_field": false,
   "fields": [
     {
@@ -22,8 +22,32 @@
       "element_type": null,
       "is_primary": false,
       "max_capacity": null,
+      "max_length": 2000,
+      "name": "texto_clave",
+      "nullable": false
+    },
+    {
+      "auto_id": false,
+      "default_value": null,
+      "dim": null,
+      "dtype": "varchar",
+      "element_type": null,
+      "is_primary": false,
+      "max_capacity": null,
       "max_length": 1000,
       "name": "pregunta",
+      "nullable": false
+    },
+    {
+      "auto_id": false,
+      "default_value": null,
+      "dim": null,
+      "dtype": "varchar",
+      "element_type": null,
+      "is_primary": false,
+      "max_capacity": null,
+      "max_length": 1500,
+      "name": "scene_summary",
       "nullable": false
     },
     {
