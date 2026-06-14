@@ -1,4 +1,5 @@
 import os
+from pymilvus import MilvusClient
 
 
 from pathlib import Path
