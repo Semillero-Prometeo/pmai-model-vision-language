@@ -1,4 +1,3 @@
-#https://milvus.io/docs/es/v2.4.x/single-vector-search.md
 from utils.milvus.conexion import get_client
 from utils.encoder.encoder import embed          
 from utils.config import SEARCH_PARAMS
@@ -22,4 +21,6 @@ def search(coleccion: str, texto: str, umbral: float) -> dict:
     #esto toca adecuarlo ya a nuestra arq de  gpt, pero por ahora lo dejamos así para probar la búsqueda vectorial
     if score >= umbral:
         return {"hit": True, "score": score, "data": mejor["entity"]}    
-    return {"hit": False, "score": score, "data": None}                 
+    return {"hit": False, "score": score, "data": None}
+
+

@@ -1,0 +1,54 @@
+Ir marcando al avanzar
+
+
+
+
+-Modelos de prueba tts stt gratuitos para hacer las pruebas en local
+
+
+
+para despues los que les toque
+Dejar estrutura para empezar con pruebas y con la 2 y 3 fase de ingesta
+ver que cuestiones adicionales se le pueden añadir depronto detector de emociones y sentimientos 
+
+una pregunta accione una respuesta emocional con su movimiento
+estado en memoria donde se alamacene la emocion y apartir de este se busque en la base vectorial 1 datos mas 
+if pregunta conocida filtra lo necesario hay muchas variables 
+
+
+ponerle seguridad a la base vectorial y filtros acerca de la informacion que se le ingesta 
+
+encriptacion de datos (documentación) en el viaje de los datos 
+auth en la base en milvus lite ,o milvus normalito filtro pero con (libreria anonimizar o remover informacion personal)  
+
+multi idioma puede ser complejo
+
+dato adicional del idioma y guardado en la base vectorial
+gpt se encargue o HG o modelo que traduzca en el momento 
+o ver que embedding te ayudan a este tipo de consultas
+
+Deduplicacion
+
+
+
+memoria o historial
+
+
+tipo chat y guardar a la persona en la base de datos y que se cree el usuario y que el robot sepa que el mensaje es de la misma persona ,saber con quien habla y con la persona identificada tenga el contexto (problemas de informacion sensible)
+buscar a la persona la foto en la base de datos y ya tener su contexto 
+crear identidades de base vectorial de la foto por medio de pasos o fases entre las bases vectoriales
+_________________
+
+como un face idtraer la info y ya dar la respuesta
+
+
+id de chat identificando a la persona realizar una limpieza de chat y uno nuevo con cada persona
+
+
+
+
+
+
+
+
+
