@@ -16,4 +16,4 @@ UMBRAL_CONOCIMIENTO = 0.70   # calibrar con pruebas
 UMBRAL_INTERACCIONES = 0.70  # calibrar con pruebas
 SEARCH_PARAMS = {"metric_type": "COSINE", "params": {"ef": 64}} #este algoritmo ya lo definimos en los indices de l base vectorial
 OPENAI_MODEL = "gpt-4o-mini" # el de la u pero ver si dejamos este u otro 
-OLLAMA_MODEL = "llama3.1:8b" #ver si dejamos este o no
+OLLAMA_MODEL = "llama3.2:1b" 
