@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 MILVUS_DB_PATH = "./androide_milvus.db"   
 EMBED_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2" #definido en la base vectorial, ver si lo dejamos o no
 EMBED_DIM = 384

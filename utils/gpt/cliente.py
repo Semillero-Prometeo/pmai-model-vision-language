@@ -1,8 +1,8 @@
-import os
-from openai import OpenAI
-from utils.config import OPENAI_MODEL
+from typing import Dict
+from utils.gpt.gptapi import generar_respuesta as _generar_respuesta
 
-_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+def generar_respuesta(prompt: str) -> Dict:
+    return _generar_respuesta(prompt)
 
-def generar_respuesta(prompt: str) -> dict:
-    return llamar_openai(prompt)      
+
+__all__ = ["generar_respuesta"]
