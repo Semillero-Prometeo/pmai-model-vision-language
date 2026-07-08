@@ -1,0 +1,11 @@
+  Nombre            : sky
+  Raza              : Criollo / Mestizo
+  Edad              : 1 añito
+  Color             : blanco como una nube con manchas cafes
+  Ojos              : verdes
+  Sexo              : Macho
+  Esterilizado      : si
+  Vacunas Al Dia    : si
+  Comida Favorita   : Salmon y pollito
+  Personalidad      : Juguetón y dormilón es cariñoso y muy dulce
+  Dueño             : andrea

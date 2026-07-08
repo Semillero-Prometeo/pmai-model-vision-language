@@ -18,10 +18,12 @@ dependencies = [
     "ollama>=0.6.2",
     "openai>=2.36.0",
     "pandas<2.4",
+    "pip>=26.1.2",
     "pymilvus[milvus-lite]>=3.0.0",
     "python-dotenv>=1.2.2",
     "seaborn>=0.13.2",
     "sentence-transformers>=5.5.1",
     "spanlp>=1.1.0",
     "uvicorn>=0.46.0",
+    "wikipedia-api>=0.15.0",
 ]

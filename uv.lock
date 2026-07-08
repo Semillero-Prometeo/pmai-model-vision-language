@@ -2654,6 +2654,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pip"
+version = "26.1.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/01/91/47e7d486260f618783899587af63ccf7980fb60245c3e63dd4571c6b57ad/pip-26.1.2.tar.gz", hash = "sha256:f49cd134c61cf2fd75e0ce2676db03e4054504a5a4986d00f8299ae632dc4605", size = 1840799, upload-time = "2026-05-31T17:33:58.56Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5d/95/6b5cb3461ea5673ba0995989746db58eb18b91b54dbf331e72f569540946/pip-26.1.2-py3-none-any.whl", hash = "sha256:382ff9f685ee3bc25864f820aa50505825f10f5458ffff07e30a6d96e5715cab", size = 1813144, upload-time = "2026-05-31T17:33:56.772Z" },
+]
+
+[[package]]
 name = "platformdirs"
 version = "4.9.6"
 source = { registry = "https://pypi.org/simple" }
@@ -2680,12 +2689,14 @@ dependencies = [
     { name = "ollama" },
     { name = "openai" },
     { name = "pandas" },
+    { name = "pip" },
     { name = "pymilvus", extra = ["milvus-lite"] },
     { name = "python-dotenv" },
     { name = "seaborn" },
     { name = "sentence-transformers" },
     { name = "spanlp" },
     { name = "uvicorn" },
+    { name = "wikipedia-api" },
 ]
 
 [package.metadata]
@@ -2703,12 +2714,14 @@ requires-dist = [
     { name = "ollama", specifier = ">=0.6.2" },
     { name = "openai", specifier = ">=2.36.0" },
     { name = "pandas", specifier = "<2.4" },
+    { name = "pip", specifier = ">=26.1.2" },
     { name = "pymilvus", extras = ["milvus-lite"], specifier = ">=3.0.0" },
     { name = "python-dotenv", specifier = ">=1.2.2" },
     { name = "seaborn", specifier = ">=0.13.2" },
     { name = "sentence-transformers", specifier = ">=5.5.1" },
     { name = "spanlp", specifier = ">=1.1.0" },
     { name = "uvicorn", specifier = ">=0.46.0" },
+    { name = "wikipedia-api", specifier = ">=0.15.0" },
 ]
 
 [[package]]
@@ -4138,6 +4151,20 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/2c/41/aa4bf9664e4cda14c3b39865b12251e8e7d239f4cd0e3cc1b6c2ccde25c1/websocket_client-1.9.0.tar.gz", hash = "sha256:9e813624b6eb619999a97dc7958469217c3176312b3a16a4bd1bc7e08a46ec98", size = 70576, upload-time = "2025-10-07T21:16:36.495Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/34/db/b10e48aa8fff7407e67470363eac595018441cf32d5e1001567a7aeba5d2/websocket_client-1.9.0-py3-none-any.whl", hash = "sha256:af248a825037ef591efbf6ed20cc5faa03d3b47b9e5a2230a529eeee1c1fc3ef", size = 82616, upload-time = "2025-10-07T21:16:34.951Z" },
+]
+
+[[package]]
+name = "wikipedia-api"
+version = "0.15.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "click" },
+    { name = "httpx" },
+    { name = "tenacity" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8c/fd/5107db6856173559881c9da718dea0b2d399ca958409d8050b6e26494f99/wikipedia_api-0.15.0.tar.gz", hash = "sha256:acc6965ed4b6948c61de5f6d1edcc49654e2fc7f7239f26111ccb4ea5796cc1d", size = 142078, upload-time = "2026-05-26T08:41:12.012Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fb/6a/011739728de80f87777485ac1eac3fa9761590729dbb790156c2df6f2c8d/wikipedia_api-0.15.0-py3-none-any.whl", hash = "sha256:b15b8745bb0c85a5872bc8e8d760d2e93a551c0257de2a31107c1bb476befdbc", size = 129153, upload-time = "2026-05-26T08:41:09.687Z" },
 ]
 
 [[package]]
