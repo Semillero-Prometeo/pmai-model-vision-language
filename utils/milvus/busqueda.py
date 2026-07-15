@@ -1,3 +1,4 @@
+#la parte de jacard fue una recomendacion de la IA toca investigar bien como funciona por que si ayudo mucho al performance del proceso pero me cambio mucho la logica so no se
 import re
 import unicodedata
 
@@ -26,7 +27,26 @@ def search(coleccion: str, texto: str, umbral: float) -> dict:
     except Exception:
         return {"hit": False, "score": 0, "data": None}
 
-    # Paso rápido: buscar coincidencias textuales simples en la colección.
+    # Primero: búsqueda vectorial (más confiable para similaridad semántica)
+    try:
+        resultados = client.search(
+            collection_name=coleccion,
+            data=[vector],
+            limit=1,
+            output_fields=["pregunta", "respuesta", "movimientos"],
+            search_params=SEARCH_PARAMS,
+        )
+    except Exception:
+        return {"hit": False, "score": 0, "data": None}
+
+    if resultados and resultados[0]:
+        mejor = resultados[0][0]
+        score = mejor.get("distance", 0)
+        # Si la similaridad vectorial alcanza el umbral, devolvemos el hit.
+        if score >= umbral:
+            return {"hit": True, "score": score, "data": mejor.get("entity")}
+
+    # Si la búsqueda vectorial no fue convincente, hacemos una comprobación textual rápida
     try:
         registros = client.query(
             collection_name=coleccion,
@@ -44,6 +64,7 @@ def search(coleccion: str, texto: str, umbral: float) -> dict:
             if not pregunta_reg:
                 continue
 
+            # coincidencia exacta o substring (prioritaria)
             if texto_norm == pregunta_reg or texto_norm in pregunta_reg or pregunta_reg in texto_norm:
                 return {"hit": True, "score": 1.0, "data": reg}
 
@@ -51,6 +72,7 @@ def search(coleccion: str, texto: str, umbral: float) -> dict:
             if not palabras_texto or not palabras_reg:
                 continue
 
+            # Jaccard como respaldo: solo si no hay mejor solución vectorial
             interseccion = len(palabras_texto & palabras_reg)
             union = len(palabras_texto | palabras_reg)
             score_textual = interseccion / union if union else 0.0
@@ -59,31 +81,13 @@ def search(coleccion: str, texto: str, umbral: float) -> dict:
                 mejores_palabras = score_textual
                 mejor_registro = reg
 
+        # umbral textual conservador
         if mejor_registro is not None and mejores_palabras >= 0.45:
             return {"hit": True, "score": mejores_palabras, "data": mejor_registro}
     except Exception:
         pass
 
-    try:
-        resultados = client.search(
-            collection_name=coleccion,
-            data=[vector],
-            limit=1,
-            output_fields=["pregunta", "respuesta", "movimientos"],
-            search_params=SEARCH_PARAMS,
-        )
-    except Exception:
-        return {"hit": False, "score": 0, "data": None}
-
-    if not resultados or not resultados[0]:
-        return {"hit": False, "score": 0, "data": None}
-
-    mejor = resultados[0][0]
-    score = mejor["distance"]      
-
-    #esto toca adecuarlo ya a nuestra arq de  gpt, pero por ahora lo dejamos así para probar la búsqueda vectorial
-    if score >= umbral:
-        return {"hit": True, "score": score, "data": mejor["entity"]}    
-    return {"hit": False, "score": score, "data": None}
+    # nada convincente
+    return {"hit": False, "score": 0, "data": None}
 
 

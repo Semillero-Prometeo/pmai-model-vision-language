@@ -1,4 +1,5 @@
 
+#codigo reutilizado pero sin implementar
 
 PROTECTED_WORDS = {
     "robot", "robots", "niño", "niña", "nino", "nina",
