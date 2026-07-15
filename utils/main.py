@@ -4,7 +4,7 @@ from prompt.principal import construir_prompt
 from utils.milvus.busqueda import search
 from utils.milvus.indexar import indexar
 from utils.gpt.gptapi import generar_respuesta
-from utils.config import COL_CONOCIMIENTO, UMBRAL_CONOCIMIENTO
+from utils.config import COL_CONOCIMIENTO, COL_INTERACCIONES, UMBRAL_CONOCIMIENTO
 
 
 def cargar_movimientos(path="data/movimientos.json"):
@@ -18,6 +18,9 @@ def responder(obj, secuencias):
     pregunta_limpia = proc["pregunta_limpia"]
     tenia_groseria = proc["tenia_groseria"]
     cache = search(COL_CONOCIMIENTO, pregunta_limpia, UMBRAL_CONOCIMIENTO)
+
+    if not cache["hit"]:
+        cache = search(COL_INTERACCIONES, pregunta_limpia, UMBRAL_CONOCIMIENTO)
 
 
     if cache["hit"]:
