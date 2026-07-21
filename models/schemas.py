@@ -1,7 +1,8 @@
+
 from pydantic import BaseModel, Field
 from typing import Any
 
-
+# Clase para representar un objeto global en el contexto 
 class GlobalObjectForContext(BaseModel):
     id_global: str
     etiqueta: str

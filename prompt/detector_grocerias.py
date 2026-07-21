@@ -1,3 +1,9 @@
+
+
+# Esto es un detector de grocerias  es el primer filtro que se le hace a la pregunta 
+# Es de una libreria que se llama spanlp y tiene soporte para varios idiomas  
+# https://github.com/jfreddypuentes/spanlp.git
+
 from spanlp.palabrota import Palabrota
 
 
@@ -17,7 +23,10 @@ class DetectorGroserias:
         return self._detector.censor(texto)
     
 
+    
+#importamus el módulo 
 _detector = DetectorGroserias()
+
 
 
 def filtrar_pregunta(question: str) -> dict | None:
