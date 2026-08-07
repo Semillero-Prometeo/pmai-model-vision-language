@@ -24,8 +24,9 @@ Pipeline de búsqueda en dos etapas
 ------------------------------------
 **Etapa 1 — Búsqueda vectorial (primaria):**
     Convierte el texto en un vector de embeddings y busca el registro
-    más cercano usando similitud coseno sobre el índice HNSW de Milvus.
-    Si el score supera el umbral recibido, retorna el resultado.
+    más cercano usando distancia coseno sobre el índice HNSW de Milvus.
+    En esta métrica, menor distancia = mejor coincidencia.
+    Si la distancia es menor o igual al umbral recibido, retorna el resultado.
 
 **Etapa 2 — Fallback textual híbrido:**
     Si la búsqueda vectorial no supera el umbral, evalúa todos los
@@ -192,9 +193,9 @@ def search(coleccion: str, texto: str, umbral: float) -> dict:
 
         texto (str): Texto de consulta — pregunta del usuario.
 
-        umbral (float): Umbral mínimo de similitud coseno para la etapa
-            vectorial. Usar ``UMBRAL_CONOCIMIENTO`` (0.35) o
-            ``UMBRAL_INTERACCIONES`` (0.70) según la colección.
+        umbral (float): Distancia máxima permitida para aceptar un resultado
+            en la etapa vectorial. Usar valores como ``0.35`` o ``0.40``
+            según la colección y el nivel de precisión deseado.
 
     Returns:
         dict: Resultado de la búsqueda:
@@ -203,7 +204,7 @@ def search(coleccion: str, texto: str, umbral: float) -> dict:
 
                 {
                     "hit":   bool,        # True si se encontró resultado relevante
-                    "score": float,       # Puntuación del mejor resultado [0.0, 1.0]
+                    "score": float,       # Distancia del mejor resultado (menor = mejor)
                     "data":  dict | None  # Registro con pregunta, respuesta, movimientos
                 }
 
@@ -266,12 +267,14 @@ def search(coleccion: str, texto: str, umbral: float) -> dict:
             score = mejor.get("distance", 0.0)
 
             logger.debug(
-                "[Vectorial] colección='%s' | score=%.4f | umbral=%.4f",
+                "[Vectorial] colección='%s' | distancia=%.4f | umbral=%.4f",
                 coleccion, score, umbral,
             )
 
-            if score >= umbral:
-                logger.info("[Vectorial] Hit | score=%.4f", score)
+            # COSINE en Milvus devuelve una distancia: menor valor = mejor match.
+            # Por eso el hit se acepta solo cuando la distancia es baja.
+            if score <= umbral:
+                logger.info("[Vectorial] Hit | distancia=%.4f", score)
                 return {"hit": True, "score": score, "data": mejor.get("entity")}
 
     except Exception as e:

@@ -18,13 +18,14 @@ EMBED_DIM = 384
 
 #base de datos de milvus esta es para la informacion de conocimiento osea casi toda esta es la que ingestamos con la base de datos
 COL_CONOCIMIENTO = "conocimiento"
-#base de datos de milvus esta es para la informacion de interacciones osea la mayoria de nuevas interacciones que haga el robot
+#base de datos de milvus esta es para la informacion de interacciones osea la mayoria de nuevas interacciones que haga el robot (no dañemos la data quemada porfavor)
 COL_INTERACCIONES = "interacciones"
 
 
-#UMBRALES DE SIMILITUD COSENO 
-UMBRAL_CONOCIMIENTO = 0.35   # calibrar con pruebas tiene un mayor recall
-UMBRAL_INTERACCIONES = 0.70  # calibrar con pruebas tiene una mayor precision
+# UMBRALES DE DISTANCIA COSENO
+# En Milvus COSINE, menor distancia = mejor coincidencia.
+UMBRAL_CONOCIMIENTO = 0.35   # distancia máxima razonable para conocimiento
+UMBRAL_INTERACCIONES = 0.40  # umbral algo más estricto para interacciones
 
 
 # parametros de busqueda para el índice HNSW en Milvus
