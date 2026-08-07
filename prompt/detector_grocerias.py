@@ -42,12 +42,34 @@ def filtrar_pregunta(question: str) -> dict | None:
 
 
 
+def _limpiar_signos_duplicados(texto: str) -> str:
+    """
+    Elimina signos duplicados como ¿¿, !!, ??, etc.
+    Ejemplo: '¿¿Qué es?' → '¿Qué es?'
+    """
+    import re
+    # Reemplaza múltiples signos de interrogación o exclamación con uno solo
+    texto = re.sub(r'¿{2,}', '¿', texto)  # ¿¿ → ¿
+    texto = re.sub(r'\?{2,}', '?', texto)  # ?? → ?
+    texto = re.sub(r'!{2,}', '!', texto)   # !! → !
+    return texto
+
+
 def procesar_pregunta(question: str) -> dict:
+    """
+    Procesa una pregunta: busca groserías, censura si es necesario y limpia signos duplicados.
+    
+    Returns:
+        dict con 'pregunta_limpia' y 'tenia_groseria'
+    """
     if not question:
         return {"pregunta_limpia": "", "tenia_groseria": False}
 
     tenia_groseria = _detector.contiene_groserias(question)
     pregunta_limpia = _detector.censurar(question) if tenia_groseria else question
+    
+    # Limpiar signos duplicados después de censurar
+    pregunta_limpia = _limpiar_signos_duplicados(pregunta_limpia)
 
     return {
         "pregunta_limpia": pregunta_limpia,

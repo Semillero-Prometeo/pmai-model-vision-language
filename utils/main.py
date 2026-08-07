@@ -58,7 +58,12 @@ def responder(obj, secuencias):
 
 # aca se indexa la pregunta y respuesta en la base de datos, si no tenia groserias, para que pueda ser utilizada en futuras consultas
     if not tenia_groseria:
-        indexar(pregunta_limpia, salida["respuesta"], salida["movimientos"])
+        indexar(
+            pregunta_limpia,
+            salida["respuesta"],
+            salida["movimientos"],
+            collection_name=COL_INTERACCIONES,
+        )
 
 
 # aca se retorna la respuesta y los movimientos que se deben realizar para responder a la pregunta, junto con la fuente de la respuesta (cache o llm)

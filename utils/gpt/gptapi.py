@@ -3,11 +3,50 @@
 
 import os
 import json
+import logging
 from openai import OpenAI
 from utils.config import OPENAI_MODEL
 
+logger = logging.getLogger(__name__)
+
 # usamos el cliente de OpenAI para interactuar con la API de GPT
 _client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+# Rango válido de IDs de movimientos (1 a 34 según data/movimientos.json)
+MIN_MOVIMIENTO_ID = 1
+MAX_MOVIMIENTO_ID = 34
+
+
+def _validar_movimientos(movimientos: list) -> list:
+    """
+    Valida que los IDs de movimientos existan en el rango permitido.
+    Deseita IDs inválidos, devuelve solo los válidos.
+    
+    Args:
+        movimientos: Lista de IDs de movimientos
+    
+    Returns:
+        Lista filtrada con solo IDs válidos
+    """
+    if not movimientos:
+        return []
+    
+    if not isinstance(movimientos, list):
+        logger.warning(f"movimientos no es lista: {type(movimientos)}")
+        return []
+    
+    validos = []
+    for mov_id in movimientos:
+        try:
+            id_int = int(mov_id)
+            if MIN_MOVIMIENTO_ID <= id_int <= MAX_MOVIMIENTO_ID:
+                validos.append(id_int)
+            else:
+                logger.warning(f"ID de movimiento fuera de rango: {id_int} (válido: {MIN_MOVIMIENTO_ID}-{MAX_MOVIMIENTO_ID})")
+        except (ValueError, TypeError):
+            logger.warning(f"ID de movimiento no es entero: {mov_id}")
+    
+    return validos
 
 
 
@@ -33,11 +72,12 @@ def llamar_openai(prompt: str) -> dict:
 # intentamos decodificar el contenido como JSON y devolver un diccionario con la respuesta y los movimientos
     try:
         data = json.loads(contenido)
+        movimientos_raw = data.get("movimientos", [])
+        movimientos_validos = _validar_movimientos(movimientos_raw)
+        
         return {
-
-# si no se puede decodificar el contenido como JSON, devolvemos un diccionario con la respuesta y una lista vacía de movimientos
             "respuesta": data.get("respuesta", ""),
-            "movimientos": data.get("movimientos", []),
+            "movimientos": movimientos_validos,  # Solo IDs válidos
         }
     
 # si no se puede decodificar el contenido como JSON, devolvemos un diccionario con la respuesta y una lista vacía de movimientos
