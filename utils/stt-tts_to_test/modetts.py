@@ -1,2 +1,3 @@
-from transformers import AutoModelForSeq2SeqLM
-model = AutoModelForSeq2SeqLM.from_pretrained("bosonai/higgs-audio-v3-tts-4b", dtype="auto")
+from transformers import pipeline
+
+pipe = pipeline("text-to-speech", model="Audio8/Audio8-TTS-Preview-0.6b", trust_remote_code=True)

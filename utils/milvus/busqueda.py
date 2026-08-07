@@ -179,7 +179,12 @@ def _jaccard(set_a: set, set_b: set) -> float:
 # FUNCIONES PÚBLICAS
 # ---------------------------------------------------------------------------
 
-def search(coleccion: str, texto: str, umbral: float) -> dict:
+def search(
+    coleccion: str,
+    texto: str,
+    umbral: float,
+    solo_exacto: bool = False,
+) -> dict:
     """
     Busca el registro más relevante en una colección Milvus para un texto dado.
 
@@ -196,6 +201,11 @@ def search(coleccion: str, texto: str, umbral: float) -> dict:
         umbral (float): Distancia máxima permitida para aceptar un resultado
             en la etapa vectorial. Usar valores como ``0.35`` o ``0.40``
             según la colección y el nivel de precisión deseado.
+
+        solo_exacto (bool): Si es ``True``, desactiva la coincidencia
+            semántica y acepta solo coincidencias exactas o por substring
+            en el fallback textual. Útil para evitar que el caché de
+            interacciones devuelva respuestas demasiado genéricas.
 
     Returns:
         dict: Resultado de la búsqueda:
@@ -253,32 +263,33 @@ def search(coleccion: str, texto: str, umbral: float) -> dict:
     # =========================================================================
     # ETAPA 1: Búsqueda vectorial (primaria)
     # =========================================================================
-    try:
-        resultados = client.search(
-            collection_name=coleccion,
-            data=[vector],
-            limit=1,
-            output_fields=["pregunta", "respuesta", "movimientos"],
-            search_params=SEARCH_PARAMS,
-        )
-
-        if resultados and resultados[0]:
-            mejor = resultados[0][0]
-            score = mejor.get("distance", 0.0)
-
-            logger.debug(
-                "[Vectorial] colección='%s' | distancia=%.4f | umbral=%.4f",
-                coleccion, score, umbral,
+    if not solo_exacto:
+        try:
+            resultados = client.search(
+                collection_name=coleccion,
+                data=[vector],
+                limit=1,
+                output_fields=["pregunta", "respuesta", "movimientos"],
+                search_params=SEARCH_PARAMS,
             )
 
-            # COSINE en Milvus devuelve una distancia: menor valor = mejor match.
-            # Por eso el hit se acepta solo cuando la distancia es baja.
-            if score <= umbral:
-                logger.info("[Vectorial] Hit | distancia=%.4f", score)
-                return {"hit": True, "score": score, "data": mejor.get("entity")}
+            if resultados and resultados[0]:
+                mejor = resultados[0][0]
+                score = mejor.get("distance", 0.0)
 
-    except Exception as e:
-        logger.error("Error en búsqueda vectorial sobre '%s': %s", coleccion, e)
+                logger.debug(
+                    "[Vectorial] colección='%s' | distancia=%.4f | umbral=%.4f",
+                    coleccion, score, umbral,
+                )
+
+                # COSINE en Milvus devuelve una distancia: menor valor = mejor match.
+                # Por eso el hit se acepta solo cuando la distancia es baja.
+                if score <= umbral:
+                    logger.info("[Vectorial] Hit | distancia=%.4f", score)
+                    return {"hit": True, "score": score, "data": mejor.get("entity")}
+
+        except Exception as e:
+            logger.error("Error en búsqueda vectorial sobre '%s': %s", coleccion, e)
 
     # =========================================================================
     # ETAPA 2: Fallback textual híbrido (exacto + Jaccard)
@@ -315,6 +326,9 @@ def search(coleccion: str, texto: str, umbral: float) -> dict:
                 return {"hit": True, "score": 1.0, "data": reg}
 
             # --- Similitud de Jaccard ---
+            if solo_exacto:
+                continue
+
             palabras_reg = set(pregunta_reg.split())
             score_jaccard = _jaccard(palabras_texto, palabras_reg)
 
