@@ -9,8 +9,14 @@ from utils.config import OPENAI_MODEL
 
 logger = logging.getLogger(__name__)
 
-# usamos el cliente de OpenAI para interactuar con la API de GPT
-_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+_client = None
+
+
+def _get_client() -> OpenAI:
+    global _client
+    if _client is None:
+        _client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    return _client
 
 # Rango válido de IDs de movimientos (1 a 34 según data/movimientos.json)
 MIN_MOVIMIENTO_ID = 1
@@ -58,7 +64,7 @@ def llamar_openai(prompt: str) -> dict:
 #el prompt se pasa como un mensaje de usuario
 #la temperatura se establece en 0.7 para obtener respuestas más creativas :)
 #el formato de respuesta se establece en json_object para que la respuesta sea un objeto JSON
-    respuesta = _client.chat.completions.create(
+    respuesta = _get_client().chat.completions.create(
         model=OPENAI_MODEL,
         messages=[{"role": "user", "content": prompt}],
         temperature=0.7,

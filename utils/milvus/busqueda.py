@@ -316,20 +316,26 @@ def search(
             if not pregunta_reg:
                 continue
 
-            # --- Coincidencia exacta o substring ---
-            if (
-                texto_norm == pregunta_reg
-                or texto_norm in pregunta_reg
-                or pregunta_reg in texto_norm
-            ):
-                logger.info("[Fallback] Hit exacto/substring | score=1.0")
+            # --- Coincidencia exacta o frase contenida ---
+            palabras_reg = set(pregunta_reg.split())
+            frase_contenida = (
+                len(palabras_texto) >= 3
+                and (
+                    f" {texto_norm} " in f" {pregunta_reg} "
+                    or f" {pregunta_reg} " in f" {texto_norm} "
+                )
+            )
+            if texto_norm == pregunta_reg or frase_contenida:
+                logger.info("[Fallback] Hit exacto/frase | score=1.0")
                 return {"hit": True, "score": 1.0, "data": reg}
 
             # --- Similitud de Jaccard ---
             if solo_exacto:
                 continue
 
-            palabras_reg = set(pregunta_reg.split())
+            interseccion = palabras_texto & palabras_reg
+            if len(interseccion) < 2:
+                continue
             score_jaccard = _jaccard(palabras_texto, palabras_reg)
 
             if score_jaccard > mejor_score_jaccard:

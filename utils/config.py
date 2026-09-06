@@ -1,14 +1,15 @@
 import os
+from pathlib import Path
+
+from dotenv import load_dotenv
 from pymilvus import MilvusClient
 
 
-from pathlib import Path
-from dotenv import load_dotenv
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+load_dotenv(PROJECT_ROOT / ".env")
 
-load_dotenv()
-
-
-MILVUS_DB_PATH = "utils/milvus/androide_milvus.db"
+MILVUS_DB_PATH = str(PROJECT_ROOT / "utils" / "milvus" / "androide_milvus.db")
+MOVIMIENTOS_PATH = PROJECT_ROOT / "data" / "movimientos.json"
 
 # https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
 EMBED_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2" #definido en la base vectorial, ver si lo dejamos o no

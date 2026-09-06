@@ -4,14 +4,16 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-#acceso a milvus conexion
-# sirve para obtener el cliente de milvus y poder hacer consultas a la base de datos
-# ademas nos da la posibilidad de cambiar la conexion a milvus en un solo lugar si es necesario
-_client = MilvusClient(MILVUS_DB_PATH)
+# El cliente se crea bajo demanda para no arrancar Milvus al importar módulos.
+_client = None
 _colecciones_inicializadas = False
 
-# funcion para obtener el cliente de milvus
+
 def get_client() -> MilvusClient:
+    global _client
+    if _client is None:
+        _client = MilvusClient(MILVUS_DB_PATH)
+    asegurar_colecciones()
     return _client
 
 
@@ -24,7 +26,9 @@ def asegurar_colecciones() -> None:
     if _colecciones_inicializadas:
         return
     
-    cliente = get_client()
+    cliente = _client
+    if cliente is None:
+        cliente = get_client()
     
     # Colección conocimiento: conocimiento verificado y curado
     if not cliente.has_collection(collection_name=COL_CONOCIMIENTO):
@@ -50,6 +54,7 @@ def asegurar_colecciones() -> None:
         cliente.load_collection(collection_name=COL_CONOCIMIENTO)
         logger.info(f"Colección '{COL_CONOCIMIENTO}' creada exitosamente.")
     else:
+        cliente.load_collection(collection_name=COL_CONOCIMIENTO)
         logger.debug(f"Colección '{COL_CONOCIMIENTO}' ya existe.")
     
     # Colección interacciones: respuestas generadas por el LLM
@@ -78,10 +83,8 @@ def asegurar_colecciones() -> None:
         cliente.load_collection(collection_name=COL_INTERACCIONES)
         logger.info(f"Colección '{COL_INTERACCIONES}' creada exitosamente.")
     else:
+        cliente.load_collection(collection_name=COL_INTERACCIONES)
         logger.debug(f"Colección '{COL_INTERACCIONES}' ya existe.")
     
     _colecciones_inicializadas = True
 
-
-# Inicializar colecciones al importar
-asegurar_colecciones()
