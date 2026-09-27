@@ -159,11 +159,15 @@ def responder(obj, secuencias):
         )
 
     # Si ninguna colección contiene una respuesta, se consulta el modelo.
+    etiqueta = getattr(obj, "etiqueta", None) or "Persona no identificada"
+
     if cache["hit"]:
+        respuesta_raw = str(cache["data"]["respuesta"])
         return {
-            "respuesta": str(cache["data"]["respuesta"]),
+            "respuesta": f"{etiqueta}, {respuesta_raw}",
             "movimiento": _normalizar_movimiento(cache["data"]["movimientos"]),
             "fuente": "cache",
+            "etiqueta": etiqueta,
         }
 
 # aca el prompt se construye con la pregunta limpia y las secuencias, luego se genera la respuesta con el modelo de lenguaje
@@ -188,7 +192,8 @@ def responder(obj, secuencias):
 
 # aca se retorna la respuesta y los movimientos que se deben realizar para responder a la pregunta, junto con la fuente de la respuesta (cache o llm)
     return {
-        "respuesta": str(salida["respuesta"]),
+        "respuesta": f"{etiqueta}, {salida['respuesta']}",
         "movimiento": _normalizar_movimiento(salida["movimientos"]),
         "fuente": "llm",
+        "etiqueta": etiqueta,
     }
