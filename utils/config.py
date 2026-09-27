@@ -34,7 +34,7 @@ SEARCH_PARAMS = {"metric_type": "COSINE", "params": {"ef": 64}} #este algoritmo 
 
 # modelos de LLM para generar respuestas
 OPENAI_MODEL = "gpt-4o-mini" # el de la u pero ver si dejamos este u otro 
-OLLAMA_MODEL = "llama3.2:1b" 
+OLLAMA_MODEL = "llama3.2:3b"
 
 
 

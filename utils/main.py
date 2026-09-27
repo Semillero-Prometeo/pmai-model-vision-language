@@ -13,11 +13,7 @@ from utils.config import (
     UMBRAL_CONOCIMIENTO,
     UMBRAL_INTERACCIONES,
 )
-
-
-
 #pipeline de procesamiento de preguntas y respuestas aca ya juntamos todito todito 
-
 
 INTENCIONES_SOCIALES = (
     "saludo_social",
@@ -159,11 +155,22 @@ def responder(obj, secuencias):
         )
 
     # Si ninguna colección contiene una respuesta, se consulta el modelo.
+    etiqueta = getattr(obj, "etiqueta", None) or "Persona no identificada"
+
     if cache["hit"]:
+        respuesta_base = str(cache["data"]["respuesta"])
+        # Personalizar con el nombre solo cuando hay persona identificada,
+        # igual que hace el LLM. La respuesta base (sin prefijo) es la que
+        # quedó guardada en Milvus, no se toca.
+        if etiqueta and etiqueta != "Persona no identificada":
+            respuesta_final = f"{etiqueta}, {respuesta_base}"
+        else:
+            respuesta_final = respuesta_base
         return {
-            "respuesta": str(cache["data"]["respuesta"]),
+            "respuesta": respuesta_final,
             "movimiento": _normalizar_movimiento(cache["data"]["movimientos"]),
             "fuente": "cache",
+            "etiqueta": etiqueta,
         }
 
 # aca el prompt se construye con la pregunta limpia y las secuencias, luego se genera la respuesta con el modelo de lenguaje
@@ -187,8 +194,11 @@ def responder(obj, secuencias):
 
 
 # aca se retorna la respuesta y los movimientos que se deben realizar para responder a la pregunta, junto con la fuente de la respuesta (cache o llm)
+    # El LLM ya debe incluir el nombre en la respuesta gracias al prompt.
+    # Aquí no prefijamos para no duplicar si el modelo ya lo hizo.
     return {
         "respuesta": str(salida["respuesta"]),
         "movimiento": _normalizar_movimiento(salida["movimientos"]),
         "fuente": "llm",
+        "etiqueta": etiqueta,
     }
