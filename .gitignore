@@ -216,4 +216,6 @@ data.zip
 *.zip
 dataset/set.zip
 
-*.envmodels/gguf/
+*.env
+models/gguf/
+*.gguf

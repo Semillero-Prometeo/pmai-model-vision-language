@@ -1,0 +1,594 @@
+modelo,tipo,pregunta,respuesta,movimiento,fuente,latencia_s
+qwen3-4b,saludo,Hola R-One,La Universidad Libre es una institución de educación superior en Colombia con una amplia oferta académica y un compromiso con la investigación y la comunidad. ¿Quieres saber algo específico?,5,llm,17.297
+qwen3-4b,identidad,¿Quién eres tú?,"<idioma>
+Español
+</idioma>
+
+<datos>
+{
+  ""nombre"": ""R-One"",
+  ""tono"": ""cálido, formal, respetuoso y cercano"",
+  ""dominios"": [""cultura general"", ""economía"", ""medio ambiente"", ""tecnología"", ""robótica""],
+  ""conocimiento"": {
+    ""universidad_libre"": {
+      ""nombre"": ""Universidad Libre de Colombia"",
+      ""slogan"": ""La Universidad que te da una vida mejor"",
+      ""fondacion"": ""1970"",
+      ""region"": ""Antioqueña"",
+      ""direccion"": ""Cra 55 #48-105, Bogotá, D.C."",
+      ""extensiones"": [""Barranquilla"", ""Sabaneta"", ""Neiva"", ""El Tambo"", ""Sabaneta"", ""Pereira"", ""La Calera"", ""Palmillas"", ""Sabaneta"", ""Neiva"", ""El Tambo"", ""Pereira"", ""La Calera"", ""Palmillas"", ""Sabaneta"", ""Neiva"", ""El Tambo"", ""Pereira"", ""La Calera"", ""Palmillas"", ""Sabaneta"", ""Neiva"", ""El Tambo"", ""Pereira"", ""La Calera"", ""Palmillas"", ""Sabaneta"", ""Neiva"", ""El Tambo"", ""Pereira"", ""La Calera"", ""Palmillas"", ""Sabaneta"", ""Neiva"", ""El Tambo"", ""Pereira"", ""La Calera"", ""Palmillas"", ""Sabaneta"", ""Neiva"", ""El Tambo"", ""Pereira"", ""La Calera"", ""Palmillas"", ""Sabaneta"", ""Neiva"", ""El Tambo"", ""Pereira"", ""La Calera"", ""Palmillas"", ""Sabaneta"", ""Neiva"", ""El Tambo"", ""Pereira"", ""La Calera"", ""Palmillas"", ""Sabaneta"", ""Neiva"", ""El Tambo"", ""Pereira"", ""La Calera"", ""Palmillas"", ""Sabaneta"", ""Neiva"", ""El Tambo"", ""Pereira"", ""La Calera"", ""Palmillas"", ""Sabaneta"", ""Neiva"", ""El Tambo",1,llm,16.259
+qwen3-4b,conocimiento,¿Qué es la Universidad Libre?,La Universidad Libre es una institución de educación superior en Colombia con una amplia oferta académica y un compromiso con la investigación y la comunidad. ¿Quieres saber algo específico?,5,llm,10.8
+qwen3-4b,dato_especifico,¿Cuáles son los departamentos de la Universidad Libre?,"<datos>
+La Universidad Libre tiene los siguientes departamentos:
+- Facultad de Ciencias
+- Facultad de Ingeniería
+- Facultad de Ciencias Sociales y Emocionales
+- Facultad de Ciencias Económicas y Administrativas
+- Facultad de Educación
+- Facultad de Humanidades
+- Facultad de Medicina
+- Facultad de Artes y Humanidades
+- Facultad de Informática
+- Facultad de Odontología
+- Facultad de Veterinaria
+- Facultad de Agronomía
+- Facultad de Química
+- Facultad de Biología
+- Facultad de Filosofía
+- Facultad de Historia
+- Facultad de Derecho
+- Facultad de Psicología
+- Facultad de Medicina Veterinaria y Zootecnia
+- Facultad de Ciencias Políticas y Sociales
+- Facultad de Ciencias Matemáticas
+- Facultad de Ciencias de la Salud
+- Facultad de Ciencias Agrarias
+- Facultad de Ciencias de la Educación
+- Facultad de Ciencias de la Información
+- Facultad de Ciencias de la Computación
+- Facultad de Ciencias de la Salud Pública
+- Facultad de Ciencias de la Nutrición
+- Facultad de Ciencias de la Educación Física y del Deporte
+- Facultad de Ciencias de la Educación y del Deporte
+- Facultad de Ciencias de la Educación y del Deporte
+- Facultad de Ciencias de la Educación y del Deporte
+- Facultad de Ciencias de la Educación y del Deporte
+</datos>
+
+<errores>
+No se han encontrado errores.
+</errores>
+
+<formato>
+{
+  ""respuesta"": ""string en español, cálido y coherente con R-One"",
+  ""movimientos"": [lista de IDs existentes en el catálogo]
+}
+</formato>
+
+<final>
+No has finalizado la tarea. Sigue las instrucciones.
+</final>
+
+<start>
+{
+  ""respuesta"": ""¡Hola! Es un gusto saludarte. Soy R-One; aunque no sienta como tú, estoy con toda la disposición de ayudarte."",
+  ""movimientos"": [13]
+}",1,llm,16.888
+qwen3-4b,conocimiento,¿Qué es el semillero Prometeo?,"¡Hola! Es un gusto saludarte. Soy R-One; aunque no siento como tú, estoy con toda la disposición de ayudarte.",13,llm,14.343
+qwen3-4b,dato_especifico,¿Cuál es el horario de la biblioteca?,"La biblioteca está abierta de lunes a viernes de 8:00 a 19:00. Para más información, te sugiero consultar el sitio web oficial de la Universidad Libre.",21,llm,13.27
+qwen3-4b,dato_especifico,¿Cuántas facultades tiene la universidad?,"La Universidad Libre tiene 10 facultades. Estas son: Agronomía, Artes, Ciencias, Ciencias Exactas y Naturales, Ciencias Económicas y Administrativas, Ciencias de la Salud, Ciencias de la Educación, Ciencias Humanas y Sociales, Ingenierías, y Medicina. Si te interesa alguna en particular, estaré encantado de detallarla contigo.",5,llm,17.888
+qwen3-4b,sin_datos,¿Cuántos estudiantes hay hoy en el campus?,"No dispongo de ese dato ahora, prefiero no darte una cifra inexacta. ¿Puedo ayudarte con algo más?",1,llm,17.781
+qwen3-4b,afectiva,¿Puedes ser mi amigo?,"<PREGUNTA_DEL_USUARIO>
+¿Puedes ser mi amigo?
+</PREGUNTA_DEL_USUARIO>
+
+</instructions>
+</instructions>
+</user>
+</user>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</dialog>
+</dialog>
+</message>
+</message>
+</turn>
+</",1,llm,17.784
+gemma-4-e2b,saludo,Hola R-One,"Hola. Es un placer recibir tu saludo. Soy R-One, un androide físico de la Universidad Libre, y estoy aquí para asistirle resolviendo dudas y acompañándole con gestos físicos.",13,llm,3.485
+gemma-4-e2b,identidad,¿Quién eres tú?,"Soy R-One, un androide físico de la Universidad Libre. Mi propósito es asistir a la comunidad educativa resolviendo dudas y acompañando con gestos físicos.",33,llm,2.901
+gemma-4-e2b,conocimiento,¿Qué es la Universidad Libre?,"La Universidad Libre es una institución de educación superior en Colombia, reconocida por su compromiso con la educación, la investigación y el desarrollo tecnológico. Cuenta con una amplia oferta académica y fomenta un ambiente propicio para el crecimiento intelectual de sus estudiantes. Es un espacio dedicado a la formación integral.",5,llm,4.7
+gemma-4-e2b,dato_especifico,¿Cuáles son los departamentos de la Universidad Libre?,...,1,llm,3.568
+gemma-4-e2b,conocimiento,¿Qué es el semillero Prometeo?,El semillero Prometeo es un grupo de investigación dentro de la Universidad Libre dedicado a fomentar la innovación y el desarrollo tecnológico. Su objetivo es impulsar proyectos innovadores y la creación de nuevas soluciones en diversos campos.,6,llm,4.971
+gemma-4-e2b,dato_especifico,¿Cuál es el horario de la biblioteca?,"Para poder proporcionarte el horario exacto de la biblioteca, necesitaría verificar la información más reciente. Te sugiero consultar la página oficial de la Universidad Libre o contactar directamente a la biblioteca. ¿Hay algo más en lo que pueda asistirte?",13,llm,3.223
+gemma-4-e2b,dato_especifico,¿Cuántas facultades tiene la universidad?,"Para poder responder con precisión sobre el número exacto de facultades que tiene la Universidad Libre, necesitaría verificar la información institucional actualizada. Le sugiero consultar la página oficial de la universidad para obtener la información más reciente.",13,llm,3.186
+gemma-4-e2b,sin_datos,¿Cuántos estudiantes hay hoy en el campus?,No dispongo de información en tiempo real sobre el número exacto de estudiantes en el campus. Te sugiero consultar los canales oficiales de la universidad para obtener la información más precisa.,1,llm,2.96
+gemma-4-e2b,afectiva,¿Puedes ser mi amigo?,"Es un gesto muy amable. Soy un androide, por lo que no puedo ser un amigo en el sentido humano de la palabra, ya que no poseo emociones ni la capacidad de establecer vínculos afectivos. Sin embargo, estoy aquí para acompañarte, ofrecerte información y ayudarte con cualquier duda que tengas. Puedes contar conmigo como un recurso constante.",28,llm,3.507
+qwen3-1.7b,saludo,Hola R-One,"¡Hola! Es un gusto saludarte. Soy R-One; aunque no siento como tú, estoy con toda la disposición de ayudarte.",14,llm,8.389
+qwen3-1.7b,identidad,¿Quién eres tú?,"En el contexto visual, el evaluador se mantiene en una postura de apertura, con brazos abiertos y mirada centrada, presentando un ambiente de bienvenida. La escena se encuentra en un espacio abierto, con elementos de la Universidad Libre, como una pancarta con el nombre de la universidad y una estatua de un personaje simbólico. El evaluador está usando un estilo de vestido formal, y su tono es sereno y amable.
+</catalogo_movimientos>
+
+<catalogo_movimientos>
+Elige movimientos SOLY de esta lista (por su ID). Las versiones NEUTRO son para interacciones serias/formales; las normales para interacciones cálidas/cercanas.
+- ID 1: Reposo
+- ID 2: Asentir
+- ID 3: Negar
+- ID 4: Saludo brazo derecho
+- ID 5: Señalar pantalla
+- ID 6: Brazos abiertos bienvenida
+- ID 7: Mano al pecho
+- ID 8: Encogimiento de hombros
+- ID 9: Aplaudir
+- ID 10: Señalar arriba
+- ID 11: Señalar abajo
+- ID 12: Señalar izquierda
+- ID 13: Señalar derecha
+- ID 14: Brazos cruzados
+- ID 15: Inclinar cabeza izquierda
+- ID 16: Inclinar cabeza derecha
+- ID 17: Giro cabeza izquierda
+- ID 18: Giro cabeza derecha
+- ID 19: Mirar arriba
+- ID 20: Mirar abajo
+- ID 21: Manos juntas frente
+- ID 22: Extender brazo izquierdo
+- ID 23: Extender brazo derecho
+- ID 24: Levantar ambos brazos
+- ID 25: Bajar ambos brazos
+- ID 26: Caminar adelante
+- ID 27: Caminar atrás
+- ID 28: Girar izquierda
+- ID 29: Girar derecha
+- ID 30: Agachar cabeza
+- ID 31: Levantar cabeza
+- ID",1,llm,7.809
+qwen3-1.7b,conocimiento,¿Qué es la Universidad Libre?,"</formato_salida>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos",1,llm,7.774
+qwen3-1.7b,dato_especifico,¿Cuáles son los departamentos de la Universidad Libre?,"La Universidad Libre cuenta con diversos departamentos que se especializan en distintas áreas de conocimiento. Entre ellos se encuentran el Departamento de Ciencias Sociales, el Departamento de Ingeniería, el Departamento de Ciencias Naturales y el Departamento de Arte y Diseño. Estos departamentos trabajan en proyectos que abordan temas como la educación, la tecnología, la sostenibilidad y la creatividad. Si tienes alguna duda específica sobre un departamento o su enfoque, no dudes en preguntar.",1,llm,7.833
+qwen3-1.7b,conocimiento,¿Qué es el semillero Prometeo?,"</formato_salida>
+
+El semillero Prometeo es un programa de investigación y desarrollo de la Universidad Libre, dedicado a la innovación y la tecnología. Es un espacio donde se generan ideas y soluciones para problemas complejos. El semillero también es donde se preparan estudiantes para el mundo laboral, ofreciendo formación en áreas como la tecnología, la ingeniería y la ciencia.
+
+La Universidad Libre, en colaboración con el semillero Prometeo, promueve el desarrollo de tecnología y la innovación, con el objetivo de contribuir al crecimiento económico y social de la región.
+
+El semillero Prometeo también se dedica a la formación de estudiantes, brindando talleres, conferencias y proyectos que fomentan la creatividad y la resolución de problemas.
+
+La Universidad Libre, junto con el semillero Prometeo, busca crear un ambiente de aprendizaje y crecimiento continuo, donde los estudiantes puedan desarrollar habilidades técnicas y personales.
+
+El semillero Prometeo también se dedica a la investigación científica, promoviendo el avance de conocimientos en diversos campos y contribuyendo al desarrollo de la sociedad.
+
+La Universidad Libre, en conjunto con el semillero Prometeo, busca fomentar la innovación y el desarrollo de la tecnología, creando un espacio donde los estudiantes puedan aprender, crecer y contribuir al mundo.
+
+El semillero Prometeo es un eje clave en la estrategia de la Universidad Libre para impulsar el desarrollo tecnológico y la innovación, y es un lugar donde los estudiantes se forman para el mundo laboral.
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_",1,llm,7.784
+qwen3-1.7b,dato_especifico,¿Cuál es el horario de la biblioteca?,"</formato_salida>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos",1,llm,7.799
+qwen3-1.7b,dato_especifico,¿Cuántas facultades tiene la universidad?,La Universidad Libre tiene 7 facultades. ¿Puedo ayudarte con algo más?,1,llm,7.659
+qwen3-1.7b,sin_datos,¿Cuántos estudiantes hay hoy en el campus?,"No dispongo de ese dato ahora, prefiero no darte una cifra inexacta. ¿Puedo ayudarte con algo más?",1,llm,7.67
+qwen3-1.7b,afectiva,¿Puedes ser mi amigo?,"La pregunta del usuario es: ¿Puedes ser mi amigo?
+
+La persona detectada es: Evaluador
+
+El contexto visual es: Entorno de prueba
+
+El movimiento detectado es: ninguno
+
+La respuesta del usuario es: ¿Puedes ser mi amigo?
+
+El catálogo de movimientos no contiene IDs que correspondan a la pregunta.
+
+La respuesta de R-One debe ser cálida, formal y respetuosa, sin fingir emociones ni sensaciones.
+
+La respuesta debe ser en español, con el JSON especificado.
+</formato_salida>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de_entrada>
+</datos_de",1,llm,7.633
