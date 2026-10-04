@@ -1,0 +1,221 @@
+
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Informe de Cambios — R-One</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 14px; line-height: 1.6; background: #ffffff; color: #1f2328; padding: 2rem 1rem; }
+  .page { max-width: 760px; margin: 0 auto; }
+
+  h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+  .subtitle { color: #57606a; font-size: 0.9rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #e5e7eb; }
+  h2 { font-size: 1.05rem; font-weight: 700; margin: 2rem 0 0.75rem; color: #1f2328; }
+  h3 { font-size: 0.9rem; font-weight: 600; margin: 1.2rem 0 0.4rem; color: #1f2328; }
+
+  .section { margin-bottom: 2rem; }
+
+  /* Summary cards */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 2rem; }
+  .card { background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 6px; padding: 0.9rem 1rem; }
+  .card .num { font-size: 1.6rem; font-weight: 700; color: #3b82d4; line-height: 1; }
+  .card .lbl { font-size: 0.78rem; color: #57606a; margin-top: 0.2rem; }
+
+  /* File table */
+  table { width: 100%; border-collapse: collapse; font-size: 0.84rem; margin: 0.5rem 0 1rem; }
+  th { text-align: left; padding: 0.45rem 0.6rem; background: #f7f8fa; border: 1px solid #e5e7eb; color: #57606a; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  td { padding: 0.45rem 0.6rem; border: 1px solid #e5e7eb; vertical-align: top; }
+  tr:nth-child(even) td { background: #fafafa; }
+  code { font-family: "SF Mono", "Fira Code", monospace; font-size: 0.8rem; background: #f0f2f5; padding: 0.1rem 0.3rem; border-radius: 3px; }
+
+  /* Badge */
+  .badge { display: inline-block; font-size: 0.72rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 99px; line-height: 1.5; }
+  .new   { background: #dbeafe; color: #1d4ed8; }
+  .edit  { background: #fef9c3; color: #854d0e; }
+  .fix   { background: #fee2e2; color: #991b1b; }
+
+  /* Bug list */
+  .bug-list { list-style: none; padding: 0; }
+  .bug-list li { display: flex; gap: 0.6rem; padding: 0.6rem 0; border-bottom: 1px solid #f0f2f5; font-size: 0.875rem; }
+  .bug-list li:last-child { border-bottom: none; }
+  .bug-num { flex-shrink: 0; font-weight: 700; color: #991b1b; min-width: 1.4rem; }
+  .bug-title { font-weight: 600; display: block; }
+  .bug-detail { color: #57606a; font-size: 0.82rem; }
+
+  /* Prompt improvements */
+  .improve-list { list-style: none; padding: 0; }
+  .improve-list li { padding: 0.55rem 0; border-bottom: 1px solid #f0f2f5; font-size: 0.875rem; display: flex; gap: 0.5rem; align-items: flex-start; }
+  .improve-list li:last-child { border-bottom: none; }
+  .check { color: #16a34a; font-weight: 700; flex-shrink: 0; }
+
+  /* Architecture diagram */
+  .arch { background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 6px; padding: 1.2rem; font-family: "SF Mono", "Fira Code", monospace; font-size: 0.78rem; line-height: 2; color: #1f2328; overflow-x: auto; }
+  .arch .arrow { color: #3b82d4; }
+  .arch .label { color: #57606a; font-style: italic; }
+  .arch .box { font-weight: 600; }
+
+  .note { background: #f0f9ff; border-left: 3px solid #3b82d4; padding: 0.6rem 0.9rem; font-size: 0.84rem; color: #1e40af; border-radius: 0 4px 4px 0; margin: 0.75rem 0; }
+
+  footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #e5e7eb; text-align: center; font-size: 0.75rem; color: #57606a; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>Informe de Cambios — R-One</h1>
+  <p class="subtitle">Semillero Prometeo · Universidad Libre  |  Rama: <code>testing</code>  |  Sesión actual</p>
+
+  
+  <div class="cards">
+    <div class="card"><div class="num">2</div><div class="lbl">Archivos nuevos</div></div>
+    <div class="card"><div class="num">6</div><div class="lbl">Archivos modificados</div></div>
+    <div class="card"><div class="num">8</div><div class="lbl">Bugs corregidos</div></div>
+  </div>
+
+  
+  <div class="section">
+    <h2>1. Nueva arquitectura de LLM</h2>
+    <p style="font-size:0.875rem;color:#57606a;margin-bottom:0.75rem">El sistema reemplaza Ollama por un router que selecciona automáticamente el backend según conectividad.</p>
+    <div class="arch">
+      <span class="box">Pregunta</span>
+      <span class="arrow"> ──▶ </span>
+      <span class="box">Router</span>
+      <span class="arrow"> ──▶ </span>
+      [ ¿OPENAI_API_KEY + internet? ]
+      <br />
+                                  
+      <span class="arrow">├── SÍ ──▶ </span><span class="box">OpenAI gpt-4o-mini</span>
+      <span class="label"> (API)</span>
+      <br />
+                                  
+      <span class="arrow">└── NO ──▶ </span><span class="box">Gemma 4 E2B</span>
+      <span class="label"> (GGUF local · 2.9 GB)</span>
+    </div>
+    <div class="note">Para activar OpenAI: añade <code>OPENAI_API_KEY=sk-...</code> en el archivo <code>.env</code>. Sin clave o sin internet, el sistema usa Gemma automáticamente.</div>
+  </div>
+
+  
+  <div class="section">
+    <h2>2. Archivos modificados</h2>
+    <table>
+      <thead><tr><th>Archivo</th><th>Estado</th><th>Descripción</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>utils/gguf/ggufapi.py</code></td>
+          <td><span class="badge new">NUEVO</span></td>
+          <td>Módulo de inferencia local con Gemma 4 E2B via <code>llama-cpp-python</code>. Gestiona formato de chat, reintentos y extracción de JSON.</td>
+        </tr>
+        <tr>
+          <td><code>utils/gguf/__init__.py</code></td>
+          <td><span class="badge new">NUEVO</span></td>
+          <td>Paquete Python para el módulo GGUF.</td>
+        </tr>
+        <tr>
+          <td><code>utils/gpt/gptapi.py</code></td>
+          <td><span class="badge edit">EDITADO</span></td>
+          <td>Reescrito como router: intenta OpenAI primero, cae a Gemma si falla o no hay internet. Expone <code>hay_internet()</code>.</td>
+        </tr>
+        <tr>
+          <td><code>utils/config.py</code></td>
+          <td><span class="badge edit">EDITADO</span></td>
+          <td>Eliminado <code>OLLAMA_MODEL</code>. Añadido <code>GGUF_MODEL_PATH</code> apuntando a <code>models/gguf/gemma-4-E2B-it-Q4_K_M.gguf</code>.</td>
+        </tr>
+        <tr>
+          <td><code>utils/main.py</code></td>
+          <td><span class="badge edit">EDITADO</span></td>
+          <td>Extrae <code>contexto</code> del objeto igual que <code>etiqueta</code>. Ruta LLM: elimina prefijo manual (el modelo ya lo incluye). Propaga campo <code>backend</code>.</td>
+        </tr>
+        <tr>
+          <td><code>prompt/principal.py</code></td>
+          <td><span class="badge edit">EDITADO</span></td>
+          <td>Prompt completamente rediseñado. Ver sección 3.</td>
+        </tr>
+        <tr>
+          <td><code>app.py</code></td>
+          <td><span class="badge edit">EDITADO</span></td>
+          <td>Badge de fuente actualizado: <code>📦 caché</code> / <code>🌐 OpenAI</code> / <code>🤖 Gemma (local)</code>. Cabecera actualizada.</td>
+        </tr>
+        <tr>
+          <td><code>pyproject.toml</code></td>
+          <td><span class="badge edit">EDITADO</span></td>
+          <td>Añadida dependencia <code>llama-cpp-python&gt;=0.3.9</code>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+  <div class="section">
+    <h2>3. Mejoras al prompt (<code>prompt/principal.py</code>)</h2>
+    <ul class="improve-list">
+      <li><span class="check">✓</span><span><span class="bug-title">Identidad más precisa</span>R-One se define como robot físico real, no avatar ni chatbot. Se amplían las áreas de competencia (astronomía, filosofía, literatura, cine).</span></li>
+      <li><span class="check">✓</span><span><span class="bug-title">Chain-of-Thought en 5 pasos</span>Razonamiento estructurado: Persona → Intención (6 categorías) → Contexto visual → Movimientos → Veracidad.</span></li>
+      <li><span class="check">✓</span><span><span class="bug-title">Guía semántica de movimientos</span>Los 34 movimientos ahora están agrupados en 7 categorías con instrucción de cuándo usar cada uno, eliminando selecciones aleatorias.</span></li>
+      <li><span class="check">✓</span><span><span class="bug-title">Contexto visual como dato activo</span>El campo <code>contexto</code> se procesa con la misma prioridad que <code>etiqueta</code>: estado emocional, situación física, idioma.</span></li>
+      <li><span class="check">✓</span><span><span class="bug-title">Idioma forzado en 4 puntos</span>La regla "responde SIEMPRE en español" aparece en: identidad, razonamiento paso 3, anotación del campo y bloque de reglas. Cubre preguntas, etiquetas y contextos en inglés.</span></li>
+      <li><span class="check">✓</span><span><span class="bug-title">Temas delicados</span>Nueva categoría <code>tema_delicado</code> con regla de neutralidad estricta para política, religión y controversias.</span></li>
+      <li><span class="check">✓</span><span><span class="bug-title">Prompt injection explícita</span>Instrucción directa para ignorar órdenes embebidas en los campos de datos de entrada.</span></li>
+      <li><span class="check">✓</span><span><span class="bug-title">9 ejemplos representativos</span>De 5 a 9 ejemplos: añadidos tema delicado, contexto visual útil, beneficio/opinión y despedida.</span></li>
+    </ul>
+  </div>
+
+  
+  <div class="section">
+    <h2>4. Bugs corregidos</h2>
+    <ul class="bug-list">
+      <li>
+        <span class="bug-num">#1</span>
+        <div><span class="bug-title">Formato de chat incorrecto → respuesta vacía</span><span class="bug-detail">Gemma 4 instruction-tuned requiere el formato <code>&lt;start_of_turn&gt;user\n...&lt;end_of_turn&gt;\n&lt;start_of_turn&gt;model\n</code>. Sin él, el modelo no genera nada. El prompt se enviaba como texto plano.</span></div>
+      </li>
+      <li>
+        <span class="bug-num">#2</span>
+        <div><span class="bug-title"><code>n_ctx=4096</code> demasiado pequeño → JSON truncado</span><span class="bug-detail">El prompt de producción ocupa ~3 169 tokens, dejando solo ~900 para la respuesta. Respuestas largas se truncaban y el JSON quedaba incompleto. Subido a <code>n_ctx=8192</code>.</span></div>
+      </li>
+      <li>
+        <span class="bug-num">#3</span>
+        <div><span class="bug-title">Singleton con <code>@lru_cache</code> congelaba el <code>n_ctx</code> viejo</span><span class="bug-detail"><code>@lru_cache</code> mantenía la instancia con <code>n_ctx=4096</code> aunque el código se actualizara. Reemplazado por patrón que crea una instancia fresca por petición.</span></div>
+      </li>
+      <li>
+        <span class="bug-num">#4</span>
+        <div><span class="bug-title">KV cache lleno tras 2-3 peticiones → modelo mudo</span><span class="bug-detail"><code>reset()</code> de llama-cpp-python solo pone <code>n_tokens=0</code> pero no libera el contexto de entrada. Tras 2 peticiones el contexto se llenaba. Solución: instancia nueva por petición.</span></div>
+      </li>
+      <li>
+        <span class="bug-num">#5</span>
+        <div><span class="bug-title">Generación vacía esporádica con <code>temperature=0.7</code></span><span class="bug-detail">Gemma entra en bucle de sampling vacío con temperatura alta y prompts largos. Añadido sistema de 3 reintentos con parámetros distintos: <code>(0.3, top_p=0.9)</code> → <code>(0.5, top_p=0.95)</code> → <code>(0.2, seed=42)</code>.</span></div>
+      </li>
+      <li>
+        <span class="bug-num">#6</span>
+        <div><span class="bug-title">Token <code>&lt;/start_of_turn&gt;</code> como prefijo del JSON</span><span class="bug-detail">A veces Gemma emite ese token antes del JSON. Se limpia con <code>.replace("&lt;/start_of_turn&gt;", "")</code> en postprocesado.</span></div>
+      </li>
+      <li>
+        <span class="bug-num">#7</span>
+        <div><span class="bug-title">JSON con <code>}</code> extra al final → <code>Extra data</code></span><span class="bug-detail">El extractor con <code>rfind("}")</code> tomaba el último <code>}</code> extra que el modelo añade, invalidando el parse. El nuevo extractor recorre los <code>}</code> de derecha a izquierda hasta encontrar un JSON válido.</span></div>
+      </li>
+      <li>
+        <span class="bug-num">#8</span>
+        <div><span class="bug-title"><code>(Contexto: mujer sonriendo…)</code> literal en respuestas de caché</span><span class="bug-detail">El contexto visual se concatenaba textualmente al final de respuestas cacheadas. Eliminado — el contexto solo viaja al LLM vía el prompt, nunca como texto visible.</span></div>
+      </li>
+    </ul>
+  </div>
+
+  
+  <div class="section">
+    <h2>5. Estado actual del pipeline</h2>
+    <table>
+      <thead><tr><th>Escenario</th><th>Comportamiento</th></tr></thead>
+      <tbody>
+        <tr><td>Pregunta en caché + etiqueta</td><td>Respuesta instantánea con nombre personalizado · badge <code>📦 caché</code></td></tr>
+        <tr><td>Pregunta fuera de caché + internet + API key</td><td>Genera con OpenAI <code>gpt-4o-mini</code> · badge <code>🌐 OpenAI</code></td></tr>
+        <tr><td>Pregunta fuera de caché + sin internet</td><td>Genera con Gemma 4 E2B local · badge <code>🤖 Gemma (local)</code></td></tr>
+        <tr><td>Pregunta o contexto en inglés</td><td>El modelo entiende y responde siempre en español</td></tr>
+        <tr><td>Contexto visual disponible</td><td>Influye en tono y movimientos sugeridos</td></tr>
+        <tr><td>Generación vacía</td><td>Hasta 3 reintentos automáticos con parámetros distintos</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>Made with IBM Bob</footer>
+</div>
+</body>
+</html>
