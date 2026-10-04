@@ -7,8 +7,9 @@ Ejecutar:
 NOTA: usar siempre el intérprete del venv, NO `uv run`, para evitar un bug
 de pathlib en el cpython-3.12.14 gestionado por uv.
 
-Requiere que Ollama esté corriendo localmente con el modelo configurado en
-utils/config.py (OLLAMA_MODEL, por defecto llama3.2:1b).
+Backends de LLM (selección automática):
+  - Con internet + OPENAI_API_KEY en .env → OpenAI gpt-4o-mini
+  - Sin internet o sin clave              → Gemma 4 E2B (GGUF local)
 """
 
 import re
@@ -92,7 +93,14 @@ def procesar(
     respuesta: str = resultado.get("respuesta", "")
     mov_id: int = resultado.get("movimiento", 1)
     fuente: str = resultado.get("fuente", "llm")
-    fuente_badge = "📦 caché" if fuente == "cache" else "🧠 Ollama"
+    backend: str = resultado.get("backend", "")
+
+    if fuente == "cache":
+        fuente_badge = "📦 caché"
+    elif backend == "openai":
+        fuente_badge = "🌐 OpenAI"
+    else:
+        fuente_badge = "🖥️ Gemma (local)"
 
     historial = historial + [
         {"role": "user",      "content": pregunta},
@@ -113,8 +121,8 @@ with gr.Blocks(title="R-One — Demo en tiempo real") as demo:
     gr.Markdown(
         """
         # 🤖 R-One — Demo en tiempo real
-        Asistente del semillero **Prometeo** · Universidad Libre  
-        _Modelo: Ollama local (`llama3.2:1b` por defecto)_
+        Asistente del semillero **Prometeo** · Universidad Libre
+        _Con internet: OpenAI `gpt-4o-mini` · Sin internet: Gemma 4 E2B (GGUF local)_
         """
     )
 

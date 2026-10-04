@@ -127,18 +127,16 @@ def cargar_movimientos(path=None):
         return json.load(f)
 
 
-# aca es donde se procesa la pregunta y se genera la respuesta, 
-# primero se limpia la pregunta, luego se busca en la cache, 
-# si no hay cache se genera la respuesta con el modelo de lenguaje y 
+# aca es donde se procesa la pregunta y se genera la respuesta,
+# primero se limpia la pregunta, luego se busca en la cache,
+# si no hay cache se genera la respuesta con el modelo de lenguaje y
 # finalmente se indexa la pregunta y respuesta en la base de datos
 def responder(obj, secuencias):
-# aca es donde se procesa la pregunta y se genera la respuesta,
     pregunta = getattr(obj, "question", None) or ""
     proc = procesar_pregunta(pregunta)
-#aca es donde se procesa la pregunta y se genera la respuesta,
     pregunta_limpia = proc["pregunta_limpia"]
     intencion = detectar_intencion(pregunta_limpia)
-# aca procesamos si la pregunta tenia groserias o no, si tenia groserias no se indexa en la base de datos
+    # aca procesamos si la pregunta tenia groserias o no, si tenia groserias no se indexa en la base de datos
     tenia_groseria = proc["tenia_groseria"]
 
     # Primero se consulta conocimiento y, si no hay hit, interacciones.
@@ -158,22 +156,27 @@ def responder(obj, secuencias):
             solo_exacto=True,
         )
 
-    # Si ninguna colección contiene una respuesta, se consulta el modelo.
+    etiqueta = getattr(obj, "etiqueta", None) or "Persona no identificada"
+
+    # ── Ruta caché ────────────────────────────────────────────────────────────
+    # La respuesta cacheada no pasa por el LLM, así que el contexto visual y la
+    # etiqueta se incorporan aquí manualmente antes de devolver el resultado.
     if cache["hit"]:
+        respuesta_raw = str(cache["data"]["respuesta"])
         return {
-            "respuesta": str(cache["data"]["respuesta"]),
+            "respuesta": f"{etiqueta}, {respuesta_raw}",
             "movimiento": _normalizar_movimiento(cache["data"]["movimientos"]),
             "fuente": "cache",
+            "etiqueta": etiqueta,
         }
 
-# aca el prompt se construye con la pregunta limpia y las secuencias, luego se genera la respuesta con el modelo de lenguaje
-# de esta manera se obtiene la respuesta y los movimientos que se deben realizar para responder a la pregunta
-# al no encontrarla en el cache
+    # ── Ruta LLM ──────────────────────────────────────────────────────────────
+    # construir_prompt ya inyecta etiqueta y contexto en el prompt; el modelo
+    # devuelve una respuesta ya personalizada, no hace falta prefijo manual.
     prompt = construir_prompt(obj, pregunta_limpia, secuencias)
     salida = generar_respuesta(prompt)
 
-
-# aca se indexa la pregunta y respuesta en la base de datos, si no tenia groserias, para que pueda ser utilizada en futuras consultas
+    # Indexar la interacción si no tenía groserías y la respuesta es almacenable.
     if (
         not tenia_groseria
         and _respuesta_interaccion_almacenable(salida.get("respuesta"))
@@ -185,10 +188,10 @@ def responder(obj, secuencias):
             collection_name=COL_INTERACCIONES,
         )
 
-
-# aca se retorna la respuesta y los movimientos que se deben realizar para responder a la pregunta, junto con la fuente de la respuesta (cache o llm)
     return {
-        "respuesta": str(salida["respuesta"]),
+        "respuesta": salida["respuesta"],
         "movimiento": _normalizar_movimiento(salida["movimientos"]),
         "fuente": "llm",
+        "backend": salida.get("_backend", "gguf"),
+        "etiqueta": etiqueta,
     }

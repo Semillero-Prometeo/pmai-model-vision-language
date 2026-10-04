@@ -32,6 +32,10 @@ UMBRAL_INTERACCIONES = 0.40  # umbral algo más estricto para interacciones
 # parametros de busqueda para el índice HNSW en Milvus
 SEARCH_PARAMS = {"metric_type": "COSINE", "params": {"ef": 64}} #este algoritmo ya lo definimos en los indices de l base vectorial
 
-# modelos de LLM para generar respuestas
-OPENAI_MODEL = "gpt-4o-mini" # el de la u pero ver si dejamos este u otro 
-OLLAMA_MODEL = "llama3.2:1b" 
+# ── Modelos de LLM ────────────────────────────────────────────────────────────
+# OpenAI: se usa cuando hay OPENAI_API_KEY en el .env y hay conectividad.
+OPENAI_MODEL = "gpt-4o-mini"
+
+# Modelo GGUF local (Gemma 4 E2B): se usa como fallback sin internet.
+# Cambia esta constante si quieres usar otro archivo GGUF.
+GGUF_MODEL_PATH = str(PROJECT_ROOT / "models" / "gguf" / "gemma-4-E2B-it-Q4_K_M.gguf")
