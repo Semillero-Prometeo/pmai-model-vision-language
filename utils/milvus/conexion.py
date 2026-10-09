@@ -9,6 +9,12 @@ _client = None
 _colecciones_inicializadas = False
 
 
+def reiniciar_cliente() -> None:
+    global _client, _colecciones_inicializadas
+    _client = None
+    _colecciones_inicializadas = False
+
+
 def get_client() -> MilvusClient:
     global _client
     if _client is None:
