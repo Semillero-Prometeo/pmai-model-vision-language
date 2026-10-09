@@ -27,3 +27,6 @@ dependencies = [
     "uvicorn>=0.46.0",
     "wikipedia-api>=0.15.0",
 ]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
