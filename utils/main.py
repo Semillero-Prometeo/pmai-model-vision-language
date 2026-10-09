@@ -1,4 +1,4 @@
-import json
+import logging
 import re
 import unicodedata
 from prompt.detector_grocerias import procesar_pregunta
@@ -14,6 +14,7 @@ from utils.config import (
     UMBRAL_INTERACCIONES,
 )
 
+logger = logging.getLogger(__name__)
 
 
 #pipeline de procesamiento de preguntas y respuestas aca ya juntamos todito todito 
@@ -76,8 +77,6 @@ def detectar_intencion(pregunta: str) -> str:
     return "general"
 
 
-MOVIMIENTO_POR_DEFECTO = 1
-
 _RESPUESTAS_NO_ALMACENABLES = (
     "no dispongo de ese dato",
     "no tengo información suficiente",
@@ -101,23 +100,10 @@ def _respuesta_interaccion_almacenable(respuesta) -> bool:
     return not any(marca in respuesta_norm for marca in _RESPUESTAS_NO_ALMACENABLES)
 
 
-def _normalizar_movimiento(movimientos) -> int:
-    if isinstance(movimientos, str):
-        try:
-            movimientos = json.loads(movimientos)
-        except json.JSONDecodeError:
-            return MOVIMIENTO_POR_DEFECTO
+def _movimientos_de_salida(movimientos, permitidos: set[int]) -> list[int]:
+    from utils.gguf.ggufapi import _validar_movimientos
 
-    if isinstance(movimientos, list) and movimientos:
-        try:
-            return int(movimientos[0])
-        except (TypeError, ValueError):
-            pass
-
-    if isinstance(movimientos, int):
-        return movimientos
-
-    return MOVIMIENTO_POR_DEFECTO
+    return _validar_movimientos(movimientos, permitidos)[:3]
 
 
 # cargamos los movimientos desde un archivo JSON el que ha hicimos
@@ -145,16 +131,27 @@ def responder(obj, secuencias):
     if intencion == "dato_especifico":
         umbral_conocimiento = min(UMBRAL_CONOCIMIENTO, 0.28)
 
-    cache = search(COL_CONOCIMIENTO, pregunta_limpia, umbral_conocimiento)
+    permitidos = {int(item["id"]) for item in secuencias}
+    milvus_caido = False
+
+    try:
+        cache = search(COL_CONOCIMIENTO, pregunta_limpia, umbral_conocimiento)
+    except Exception:
+        milvus_caido = True
+        cache = {"hit": False}
 
     if not cache["hit"]:
         # Las interacciones generadas se consultan solo con coincidencia exacta.
-        cache = search(
-            COL_INTERACCIONES,
-            pregunta_limpia,
-            UMBRAL_INTERACCIONES,
-            solo_exacto=True,
-        )
+        try:
+            cache = search(
+                COL_INTERACCIONES,
+                pregunta_limpia,
+                UMBRAL_INTERACCIONES,
+                solo_exacto=True,
+            )
+        except Exception:
+            milvus_caido = True
+            cache = {"hit": False}
 
     etiqueta = getattr(obj, "etiqueta", None) or "Persona no identificada"
 
@@ -165,7 +162,9 @@ def responder(obj, secuencias):
         respuesta_raw = str(cache["data"]["respuesta"])
         return {
             "respuesta": f"{etiqueta}, {respuesta_raw}",
-            "movimiento": _normalizar_movimiento(cache["data"]["movimientos"]),
+            "movimientos": _movimientos_de_salida(
+                cache["data"].get("movimientos"), permitidos
+            ),
             "fuente": "cache",
             "etiqueta": etiqueta,
         }
@@ -178,19 +177,23 @@ def responder(obj, secuencias):
 
     # Indexar la interacción si no tenía groserías y la respuesta es almacenable.
     if (
-        not tenia_groseria
+        not milvus_caido
+        and not tenia_groseria
         and _respuesta_interaccion_almacenable(salida.get("respuesta"))
     ):
-        indexar(
-            pregunta_limpia,
-            salida["respuesta"],
-            salida["movimientos"],
-            collection_name=COL_INTERACCIONES,
-        )
+        try:
+            indexar(
+                pregunta_limpia,
+                salida["respuesta"],
+                salida["movimientos"],
+                collection_name=COL_INTERACCIONES,
+            )
+        except Exception:
+            logger.exception("No se pudo indexar la interacción en Milvus")
 
     return {
         "respuesta": salida["respuesta"],
-        "movimiento": _normalizar_movimiento(salida["movimientos"]),
+        "movimientos": _movimientos_de_salida(salida.get("movimientos"), permitidos),
         "fuente": "llm",
         "backend": salida.get("_backend", "gguf"),
         "etiqueta": etiqueta,

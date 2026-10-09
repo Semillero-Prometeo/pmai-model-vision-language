@@ -91,7 +91,8 @@ def procesar(
     resultado = main_module.responder(obj, secuencias)
 
     respuesta: str = resultado.get("respuesta", "")
-    mov_id: int = resultado.get("movimiento", 1)
+    movs = resultado.get("movimientos") or []
+    mov_id = movs[0] if movs else None
     fuente: str = resultado.get("fuente", "llm")
     backend: str = resultado.get("backend", "")
 
@@ -107,7 +108,7 @@ def procesar(
         {"role": "assistant", "content": f"{respuesta}\n\n*Fuente: {fuente_badge}*"},
     ]
 
-    mov_texto = _formatear_movimientos(mov_id)
+    mov_texto = "Sin movimiento" if mov_id is None else _formatear_movimientos(mov_id)
     audio_path = _texto_a_wav(respuesta)
     return historial, "", mov_texto, audio_path
 

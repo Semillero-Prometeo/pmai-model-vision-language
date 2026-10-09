@@ -14,31 +14,18 @@ from utils.config import GGUF_MODEL_PATH
 
 logger = logging.getLogger(__name__)
 
-# Rango válido de IDs de movimientos (1 a 34 según data/movimientos.json)
-MIN_MOVIMIENTO_ID = 1
-MAX_MOVIMIENTO_ID = 34
-
-
-def _validar_movimientos(movimientos: list) -> list:
-    """Valida que los IDs de movimientos estén en el rango permitido."""
-    if not movimientos:
-        return []
-    if not isinstance(movimientos, list):
-        logger.warning("movimientos no es lista: %s", type(movimientos))
+def _validar_movimientos(movimientos: list, permitidos: set[int] | None = None) -> list:
+    if not movimientos or not isinstance(movimientos, list):
         return []
     validos = []
     for mov_id in movimientos:
         try:
             id_int = int(mov_id)
-            if MIN_MOVIMIENTO_ID <= id_int <= MAX_MOVIMIENTO_ID:
-                validos.append(id_int)
-            else:
-                logger.warning(
-                    "ID de movimiento fuera de rango: %d (válido: %d-%d)",
-                    id_int, MIN_MOVIMIENTO_ID, MAX_MOVIMIENTO_ID,
-                )
-        except (ValueError, TypeError):
-            logger.warning("ID de movimiento no es entero: %s", mov_id)
+        except (TypeError, ValueError):
+            continue
+        if permitidos is not None and id_int not in permitidos:
+            continue
+        validos.append(id_int)
     return validos
 
 
