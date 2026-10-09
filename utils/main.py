@@ -1,3 +1,4 @@
+import json
 import logging
 import re
 import unicodedata
@@ -103,6 +104,11 @@ def _respuesta_interaccion_almacenable(respuesta) -> bool:
 def _movimientos_de_salida(movimientos, permitidos: set[int]) -> list[int]:
     from utils.gguf.ggufapi import _validar_movimientos
 
+    if isinstance(movimientos, str):
+        try:
+            movimientos = json.loads(movimientos)
+        except json.JSONDecodeError:
+            return []
     return _validar_movimientos(movimientos, permitidos)[:3]
 
 
