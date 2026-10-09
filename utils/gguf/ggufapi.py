@@ -9,10 +9,17 @@ gemma-4-E2B-it-Q4_K_M.gguf) y expone la misma interfaz que gptapi:
 import json
 import logging
 import os
+import threading
 
 from utils.config import GGUF_MODEL_PATH
 
 logger = logging.getLogger(__name__)
+
+_APOLOGY = {
+    "respuesta": "Lo siento, no puedo responder en este momento.",
+    "movimientos": [],
+}
+
 
 def _validar_movimientos(movimientos: list, permitidos: set[int] | None = None) -> list:
     if not movimientos or not isinstance(movimientos, list):
@@ -36,6 +43,10 @@ except ImportError:
     _LLAMA_DISPONIBLE = False
 
 
+_llm = None
+_lock = threading.Lock()
+
+
 def _nueva_instancia() -> "_Llama":
     """Crea una instancia fresca del modelo con KV cache vacío."""
     if not _LLAMA_DISPONIBLE:
@@ -57,6 +68,29 @@ def _nueva_instancia() -> "_Llama":
     )
 
 
+def _obtener_o_crear() -> "_Llama":
+    global _llm
+    if _llm is None:
+        _llm = _nueva_instancia()
+    return _llm
+
+
+def _descartar() -> None:
+    global _llm
+    _llm = None
+
+
+def precargar() -> None:
+    """Precarga el modelo GGUF en memoria; no interrumpe el arranque si falla."""
+    with _lock:
+        try:
+            _obtener_o_crear()
+        except ImportError:
+            logger.error("llama-cpp-python no está instalado.")
+        except FileNotFoundError:
+            logger.error("Modelo GGUF no encontrado: %s", GGUF_MODEL_PATH)
+
+
 # Formato de chat que usa Gemma 4 (Gemma instruction-tuned).
 # El modelo solo genera cuando ve "<start_of_turn>model\n" al final.
 _GEMMA_CHAT_TEMPLATE = (
@@ -65,57 +99,7 @@ _GEMMA_CHAT_TEMPLATE = (
 )
 
 
-def llamar_gguf(prompt: str) -> dict:
-    """Llama al modelo GGUF local y devuelve respuesta + movimientos.
-
-    Se crea una instancia nueva por cada llamada para garantizar un KV cache
-    completamente limpio. llama-cpp-python no libera el contexto de tokens de
-    entrada con reset(), por lo que reusar la instancia hace que el contexto
-    se llene tras 2-3 peticiones y el modelo deje de generar.
-    """
-    if not _LLAMA_DISPONIBLE:
-        logger.error("llama-cpp-python no está instalado.")
-        return {"respuesta": "Lo siento, el modelo local no está disponible.", "movimientos": []}
-    if not os.path.isfile(GGUF_MODEL_PATH):
-        logger.error("Modelo GGUF no encontrado: %s", GGUF_MODEL_PATH)
-        return {"respuesta": "Lo siento, el modelo local no está disponible.", "movimientos": []}
-
-    prompt_formateado = _GEMMA_CHAT_TEMPLATE.format(prompt=prompt)
-
-    # Parámetros de inferencia. Se intenta hasta MAX_INTENTOS veces con semillas
-    # distintas por si el modelo genera vacío (comportamiento esporádico de Gemma
-    # con temperature baja y prompts largos).
-    _PARAMS = [
-        {"temperature": 0.3, "top_p": 0.9},
-        {"temperature": 0.5, "top_p": 0.95},
-        {"temperature": 0.2, "top_p": 0.85, "seed": 42},
-    ]
-
-    contenido = ""
-    for intento, params in enumerate(_PARAMS, 1):
-        try:
-            llm = _nueva_instancia()
-            output = llm(
-                prompt_formateado,
-                max_tokens=1024,
-                stop=["<end_of_turn>"],
-                **params,
-            )
-            raw: str = output["choices"][0]["text"]
-            contenido = raw.replace("</start_of_turn>", "").strip()
-            if contenido:
-                break
-            logger.warning("Intento %d generó vacío, reintentando…", intento)
-        except Exception as exc:
-            logger.error("Error en intento %d de inferencia GGUF: %s", intento, exc)
-
-    if not contenido:
-        return {
-            "respuesta": "Lo siento, no puedo responder en este momento.",
-            "movimientos": [],
-        }
-
-    # Intentar parsear JSON directamente
+def _parsear_contenido(contenido: str) -> dict:
     try:
         data = json.loads(contenido)
         return {
@@ -125,9 +109,6 @@ def llamar_gguf(prompt: str) -> dict:
     except json.JSONDecodeError:
         pass
 
-    # Buscar el primer bloque JSON bien formado dentro del texto.
-    # Se prueba desde el primer '{' hasta cada '}' de derecha a izquierda
-    # para tolerar tokens extra que el modelo añada al final (e.g. "}\n}").
     start = contenido.find("{")
     if start != -1:
         pos = len(contenido)
@@ -143,9 +124,42 @@ def llamar_gguf(prompt: str) -> dict:
                     "movimientos": _validar_movimientos(data.get("movimientos", [])),
                 }
             except json.JSONDecodeError:
-                pass  # Intentar con el siguiente '}' hacia la izquierda
+                pass
 
     return {"respuesta": contenido, "movimientos": []}
+
+
+def llamar_gguf(prompt: str) -> dict:
+    """Llama al modelo GGUF local y devuelve respuesta + movimientos."""
+    if not _LLAMA_DISPONIBLE:
+        logger.error("llama-cpp-python no está instalado.")
+        return dict(_APOLOGY)
+    if not os.path.isfile(GGUF_MODEL_PATH):
+        logger.error("Modelo GGUF no encontrado: %s", GGUF_MODEL_PATH)
+        return dict(_APOLOGY)
+
+    prompt_formateado = _GEMMA_CHAT_TEMPLATE.format(prompt=prompt)
+
+    with _lock:
+        for intento in (1, 2):
+            llm = _obtener_o_crear()
+            llm.reset()
+            output = llm(
+                prompt_formateado,
+                max_tokens=1024,
+                stop=["<end_of_turn>"],
+                temperature=0.3,
+                top_p=0.9,
+            )
+            raw: str = output["choices"][0]["text"]
+            contenido = raw.replace("</start_of_turn>", "").strip()
+            if contenido:
+                return _parsear_contenido(contenido)
+            if intento == 1:
+                logger.warning("Generación vacía, reconstruyendo instancia…")
+                _descartar()
+
+        return dict(_APOLOGY)
 
 
 def generar_respuesta(prompt: str) -> dict:
