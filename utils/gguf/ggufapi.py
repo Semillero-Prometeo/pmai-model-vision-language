@@ -10,8 +10,9 @@ import json
 import logging
 import os
 import threading
+from pathlib import Path
 
-from utils.config import GGUF_MODEL_PATH
+from utils.config import GGUF_HF_FILENAME, GGUF_HF_REPO, GGUF_MODEL_PATH
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +39,7 @@ def _validar_movimientos(movimientos: list, permitidos: set[int] | None = None) 
 
 try:
     from llama_cpp import Llama as _Llama  # type: ignore
+
     _LLAMA_DISPONIBLE = True
 except ImportError:
     _LLAMA_DISPONIBLE = False
@@ -47,18 +49,31 @@ _llm = None
 _lock = threading.Lock()
 
 
+def _descargar_gguf(repo_id: str, filename: str, local_dir: str) -> str:
+    from huggingface_hub import hf_hub_download
+
+    return hf_hub_download(repo_id=repo_id, filename=filename, local_dir=local_dir)
+
+
+def asegurar_modelo() -> None:
+    """Descarga el GGUF de Hugging Face si todavía no está en disco."""
+    path = Path(GGUF_MODEL_PATH)
+    if path.is_file():
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    logger.info("Descargando %s desde %s …", GGUF_HF_FILENAME, GGUF_HF_REPO)
+    _descargar_gguf(GGUF_HF_REPO, GGUF_HF_FILENAME, str(path.parent))
+    if not path.is_file():
+        raise FileNotFoundError(f"Modelo GGUF no quedó en: {path}")
+
+
 def _nueva_instancia() -> "_Llama":
     """Crea una instancia fresca del modelo con KV cache vacío."""
     if not _LLAMA_DISPONIBLE:
         raise ImportError(
-            "llama-cpp-python no está instalado. "
-            "Ejecuta: uv add llama-cpp-python"
+            "llama-cpp-python no está instalado. Ejecuta: uv add llama-cpp-python"
         )
-    if not os.path.isfile(GGUF_MODEL_PATH):
-        raise FileNotFoundError(
-            f"Modelo GGUF no encontrado en: {GGUF_MODEL_PATH}\n"
-            "Descárgalo y colócalo en models/gguf/ o ajusta GGUF_MODEL_PATH en config.py"
-        )
+    asegurar_modelo()
     logger.info("Cargando modelo GGUF desde %s …", GGUF_MODEL_PATH)
     return _Llama(
         model_path=GGUF_MODEL_PATH,
@@ -87,15 +102,16 @@ def precargar() -> None:
             _obtener_o_crear()
         except ImportError:
             logger.error("llama-cpp-python no está instalado.")
-        except FileNotFoundError:
-            logger.error("Modelo GGUF no encontrado: %s", GGUF_MODEL_PATH)
+        except Exception:
+            logger.exception(
+                "No se pudo preparar el modelo GGUF en %s", GGUF_MODEL_PATH
+            )
 
 
 # Formato de chat que usa Gemma 4 (Gemma instruction-tuned).
 # El modelo solo genera cuando ve "<start_of_turn>model\n" al final.
 _GEMMA_CHAT_TEMPLATE = (
-    "<start_of_turn>user\n{prompt}<end_of_turn>\n"
-    "<start_of_turn>model\n"
+    "<start_of_turn>user\n{prompt}<end_of_turn>\n<start_of_turn>model\n"
 )
 
 
@@ -116,7 +132,7 @@ def _parsear_contenido(contenido: str) -> dict:
             pos = contenido.rfind("}", start, pos)
             if pos == -1:
                 break
-            candidato = contenido[start:pos + 1]
+            candidato = contenido[start : pos + 1]
             try:
                 data = json.loads(candidato)
                 return {
@@ -134,8 +150,10 @@ def llamar_gguf(prompt: str) -> dict:
     if not _LLAMA_DISPONIBLE:
         logger.error("llama-cpp-python no está instalado.")
         return dict(_APOLOGY)
-    if not os.path.isfile(GGUF_MODEL_PATH):
-        logger.error("Modelo GGUF no encontrado: %s", GGUF_MODEL_PATH)
+    try:
+        asegurar_modelo()
+    except Exception:
+        logger.exception("No se pudo obtener el modelo GGUF en %s", GGUF_MODEL_PATH)
         return dict(_APOLOGY)
 
     prompt_formateado = _GEMMA_CHAT_TEMPLATE.format(prompt=prompt)

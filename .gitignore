@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# Pesos locales (se descargan al arrancar si faltan)
+*.gguf
+
 # Distribution / packaging
 .Python
 build/

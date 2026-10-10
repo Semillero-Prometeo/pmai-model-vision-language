@@ -11,6 +11,7 @@ requires-python = ">=3.12"
 dependencies = [
     "dotenv>=0.9.9",
     "fastapi>=0.136.1",
+    "huggingface-hub>=0.26",
     "httpx>=0.28.1",
     "ibm-watsonx-ai>=1.5.13",
     "ipykernel>=7.2.0",
