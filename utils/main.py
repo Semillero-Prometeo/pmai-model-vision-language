@@ -2,11 +2,10 @@ import json
 import logging
 import re
 import unicodedata
+
 from prompt.detector_grocerias import procesar_pregunta
 from prompt.principal import construir_prompt
-from utils.milvus.busqueda import search
-from utils.milvus.indexar import indexar
-from utils.gpt.gptapi import generar_respuesta
+
 from utils.config import (
     COL_CONOCIMIENTO,
     COL_INTERACCIONES,
@@ -14,11 +13,14 @@ from utils.config import (
     UMBRAL_CONOCIMIENTO,
     UMBRAL_INTERACCIONES,
 )
+from utils.gpt.gptapi import generar_respuesta
+from utils.milvus.busqueda import search
+from utils.milvus.indexar import indexar
 
 logger = logging.getLogger(__name__)
 
 
-#pipeline de procesamiento de preguntas y respuestas aca ya juntamos todito todito 
+# pipeline de procesamiento de preguntas y respuestas aca ya juntamos todito todito
 
 
 INTENCIONES_SOCIALES = (
@@ -34,7 +36,8 @@ def _normalizar_texto(texto: str) -> str:
     return " ".join(texto.split())
 
 
-#esto es una recomendacion por que hay problemas para identificar intenciones
+# esto es una recomendacion por que hay problemas para identificar intenciones
+
 
 def _contiene_termino(texto: str, terminos: tuple[str, ...]) -> bool:
     return any(re.search(rf"\b{re.escape(termino)}\b", texto) for termino in terminos)
@@ -53,24 +56,56 @@ def detectar_intencion(pregunta: str) -> str:
         return "saludo_social"
 
     identidad = (
-        "quien eres", "como te llamas", "que eres", "r one", "universidad libre",
-        "prometeo", "tu nombre", "tu proposito",
+        "quien eres",
+        "como te llamas",
+        "que eres",
+        "r one",
+        "universidad libre",
+        "prometeo",
+        "tu nombre",
+        "tu proposito",
     )
     if any(termino in pregunta_norm for termino in identidad):
         return "identidad_universidad"
 
     beneficios = (
-        "beneficio", "beneficios", "ventaja", "ventajas", "opinion", "recomiendas",
-        "conviene", "vale la pena", "por que", "porque",
+        "beneficio",
+        "beneficios",
+        "ventaja",
+        "ventajas",
+        "opinion",
+        "recomiendas",
+        "conviene",
+        "vale la pena",
+        "por que",
+        "porque",
     )
     if any(termino in pregunta_norm for termino in beneficios):
         return "beneficio_opinion"
 
     datos = (
-        "cuanto", "cuantos", "cuanta", "cuantas", "donde", "cual", "cuales",
-        "quien", "cuando", "horario", "sede", "departamento", "facultad",
-        "requisito", "requisitos", "precio", "direccion", "telefono", "correo",
-        "fecha", "fechas", "nombre",
+        "cuanto",
+        "cuantos",
+        "cuanta",
+        "cuantas",
+        "donde",
+        "cual",
+        "cuales",
+        "quien",
+        "cuando",
+        "horario",
+        "sede",
+        "departamento",
+        "facultad",
+        "requisito",
+        "requisitos",
+        "precio",
+        "direccion",
+        "telefono",
+        "correo",
+        "fecha",
+        "fechas",
+        "nombre",
     )
     if _contiene_termino(pregunta_norm, datos):
         return "dato_especifico"
@@ -130,6 +165,13 @@ def responder(obj, secuencias):
     intencion = detectar_intencion(pregunta_limpia)
     # aca procesamos si la pregunta tenia groserias o no, si tenia groserias no se indexa en la base de datos
     tenia_groseria = proc["tenia_groseria"]
+    logger.info(
+        "accion_inicio intencion=%s chars=%s etiqueta=%s tiene_contexto=%s",
+        intencion,
+        len(pregunta_limpia),
+        getattr(obj, "etiqueta", None),
+        bool(getattr(obj, "contexto", None)),
+    )
 
     # Primero se consulta conocimiento y, si no hay hit, interacciones.
     # Conocimiento tiene prioridad y ambas colecciones se mantienen separadas.
@@ -145,6 +187,11 @@ def responder(obj, secuencias):
     except Exception:
         milvus_caido = True
         cache = {"hit": False}
+    logger.info(
+        "accion_conocimiento hit=%s milvus_caido=%s",
+        bool(cache.get("hit")),
+        milvus_caido,
+    )
 
     if not cache["hit"]:
         # Las interacciones generadas se consultan solo con coincidencia exacta.
@@ -158,6 +205,11 @@ def responder(obj, secuencias):
         except Exception:
             milvus_caido = True
             cache = {"hit": False}
+        logger.info(
+            "accion_interacciones hit=%s milvus_caido=%s",
+            bool(cache.get("hit")),
+            milvus_caido,
+        )
 
     etiqueta = getattr(obj, "etiqueta", None) or "Persona no identificada"
 
@@ -166,6 +218,7 @@ def responder(obj, secuencias):
     # etiqueta se incorporan aquí manualmente antes de devolver el resultado.
     if cache["hit"]:
         respuesta_raw = str(cache["data"]["respuesta"])
+        logger.info("accion_respuesta fuente=cache")
         return {
             "respuesta": f"{etiqueta}, {respuesta_raw}",
             "movimientos": _movimientos_de_salida(
@@ -178,8 +231,12 @@ def responder(obj, secuencias):
     # ── Ruta LLM ──────────────────────────────────────────────────────────────
     # construir_prompt ya inyecta etiqueta y contexto en el prompt; el modelo
     # devuelve una respuesta ya personalizada, no hace falta prefijo manual.
+    logger.info("accion_llm_start")
     prompt = construir_prompt(obj, pregunta_limpia, secuencias)
     salida = generar_respuesta(prompt)
+    logger.info(
+        "accion_respuesta fuente=llm backend=%s", salida.get("_backend", "gguf")
+    )
 
     # Indexar la interacción si no tenía groserías y la respuesta es almacenable.
     if (
