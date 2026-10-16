@@ -220,3 +220,6 @@ data.zip
 dataset/set.zip
 
 *.env
+
+*.hnsw.idx
+*.arrow
