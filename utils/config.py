@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from pymilvus import MilvusClient
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-load_dotenv(PROJECT_ROOT / ".env")
+load_dotenv(PROJECT_ROOT / ".env", override=False)
 
 MILVUS_DB_PATH = str(PROJECT_ROOT / "utils" / "milvus" / "androide_milvus.db")
 MOVIMIENTOS_PATH = PROJECT_ROOT / "data" / "movimientos.json"

@@ -2,10 +2,9 @@
 utils/gpt/gptapi.py — Router de LLM con fallback automático.
 
 Estrategia:
-  1. Si hay OPENAI_API_KEY en el entorno Y hay conectividad a internet
-     → usa OpenAI (gpt-4o-mini).
-  2. Si no → usa el modelo GGUF local (gemma-4-E2B-it-Q4_K_M.gguf)
-     via llama-cpp-python.
+  1. Si hay OPENAI_API_KEY en el entorno → intenta OpenAI (gpt-4o-mini).
+  2. Si no hay clave, o la llamada falla → modelo GGUF local
+     (gemma-4-E2B-it-Q4_K_M.gguf) via llama-cpp-python.
 
 La interfaz pública (generar_respuesta, _validar_movimientos) se mantiene
 idéntica para no romper los módulos que la importan.
@@ -29,10 +28,8 @@ logger = logging.getLogger(__name__)
 __all__ = ["_validar_movimientos", "generar_respuesta", "hay_internet"]
 
 
-# ── Detección de conectividad ─────────────────────────────────────────────────
-
-def hay_internet(host: str = "8.8.8.8", puerto: int = 53, timeout: float = 2.0) -> bool:
-    """Devuelve True si hay conectividad TCP al host indicado."""
+def hay_internet(host: str = "api.openai.com", puerto: int = 443, timeout: float = 2.0) -> bool:
+    """Sonda opcional para logs. No decide el backend de generar_respuesta."""
     try:
         socket.setdefaulttimeout(timeout)
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -41,8 +38,6 @@ def hay_internet(host: str = "8.8.8.8", puerto: int = 53, timeout: float = 2.0) 
     except OSError:
         return False
 
-
-# ── Backend OpenAI ────────────────────────────────────────────────────────────
 
 def llamar_openai(prompt: str) -> dict:
     """Llama a la API de OpenAI y devuelve respuesta + movimientos."""
@@ -74,20 +69,16 @@ def llamar_openai(prompt: str) -> dict:
         return {"respuesta": contenido, "movimientos": []}
 
 
-# ── Router principal ──────────────────────────────────────────────────────────
-
 def generar_respuesta(prompt: str) -> dict:
     """
-    Genera una respuesta usando OpenAI si hay internet y API key,
-    o el modelo GGUF local (Gemma 4 E2B) como fallback.
+    Genera una respuesta con OpenAI si hay API key, o Gemma 4 E2B si no.
 
     El campo extra ``_backend`` indica qué motor se usó:
       "openai" | "gguf"
     """
-    api_key = os.environ.get("OPENAI_API_KEY", "")
-    usar_openai = bool(api_key) and hay_internet()
+    api_key = (os.environ.get("OPENAI_API_KEY") or "").strip()
 
-    if usar_openai:
+    if api_key:
         try:
             resultado = llamar_openai(prompt)
             resultado["_backend"] = "openai"
