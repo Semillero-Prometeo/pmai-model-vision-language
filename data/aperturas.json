@@ -1,0 +1,550 @@
+[
+  {
+    "situacion": "confusion_orientacion",
+    "ejemplos": [
+      "person with confused expression looking at a map",
+      "lost person looking around trying to find something",
+      "a person who seems confused or disoriented",
+      "someone looking at a campus map trying to find a building",
+      "persona confundida buscando orientación"
+    ],
+    "aperturas": [
+      "veo que buscas orientación",
+      "parece que necesitas una mano para ubicarte",
+      "noto que estás buscando algo",
+      "si andas buscando el rumbo, aquí te ayudo"
+    ]
+  },
+  {
+    "situacion": "sonrisa_saludo",
+    "ejemplos": [
+      "a person smiling at the camera",
+      "someone waving hello with a happy face",
+      "a smiling person greeting",
+      "a friendly person with a big smile",
+      "persona sonriendo y saludando"
+    ],
+    "aperturas": [
+      "veo que llegas con una sonrisa",
+      "gracias por ese saludo",
+      "se agradece esa sonrisa",
+      "da gusto recibir una sonrisa"
+    ]
+  },
+  {
+    "situacion": "alegria_emocion",
+    "ejemplos": [
+      "an excited person with a joyful expression",
+      "someone laughing happily",
+      "a person jumping with joy",
+      "a very happy and enthusiastic person",
+      "persona muy contenta y emocionada"
+    ],
+    "aperturas": [
+      "se nota que vienes con muy buen ánimo",
+      "qué energía tan buena traes",
+      "contagia esa alegría que traes"
+    ]
+  },
+  {
+    "situacion": "sorpresa_asombro",
+    "ejemplos": [
+      "a person with a surprised expression and open mouth",
+      "someone amazed looking at the robot",
+      "a person who looks astonished",
+      "persona sorprendida mirando al robot"
+    ],
+    "aperturas": [
+      "veo que te sorprendió algo",
+      "imagino que un robot no se ve todos los días",
+      "noto tu asombro"
+    ]
+  },
+  {
+    "situacion": "frustracion_molestia",
+    "ejemplos": [
+      "an annoyed person frowning",
+      "someone looking angry or frustrated",
+      "a person with a serious worried face and furrowed brows",
+      "persona molesta o frustrada"
+    ],
+    "aperturas": [
+      "noto que algo te preocupa, vamos a resolverlo con calma",
+      "parece que ha sido un momento complicado, estoy aquí para ayudarte",
+      "con calma, veamos cómo ayudarte"
+    ]
+  },
+  {
+    "situacion": "nervios_timidez",
+    "ejemplos": [
+      "a shy person hesitating to approach",
+      "someone nervous looking away",
+      "a person who seems timid or unsure",
+      "persona tímida o nerviosa"
+    ],
+    "aperturas": [
+      "con tranquilidad, no hay prisa para preguntar",
+      "puedes preguntarme con total confianza",
+      "no te preocupes, aquí no hay preguntas tontas"
+    ]
+  },
+  {
+    "situacion": "cansancio_tristeza",
+    "ejemplos": [
+      "a tired person yawning",
+      "a sad person with a downcast face",
+      "someone who looks exhausted",
+      "a person rubbing their eyes sleepy",
+      "persona cansada o triste"
+    ],
+    "aperturas": [
+      "se nota que ha sido un día largo",
+      "noto que quizá no ha sido el mejor día",
+      "te ves con ganas de un descanso, pero aquí te ayudo"
+    ]
+  },
+  {
+    "situacion": "prisa",
+    "ejemplos": [
+      "a person walking fast, in a hurry",
+      "someone rushing past quickly",
+      "a person running late checking the time",
+      "persona con prisa caminando rápido"
+    ],
+    "aperturas": [
+      "veo que vas con prisa, te respondo de una vez",
+      "sé que tienes el tiempo justo, voy al punto",
+      "te lo digo rápido para que sigas con tu camino"
+    ]
+  },
+  {
+    "situacion": "mira_reloj",
+    "ejemplos": [
+      "a person looking at their wristwatch",
+      "someone checking the time on a watch",
+      "persona mirando el reloj"
+    ],
+    "aperturas": [
+      "veo que estás pendiente de la hora, voy directo",
+      "sé que el tiempo cuenta, así que voy al grano"
+    ]
+  },
+  {
+    "situacion": "carga_objetos",
+    "ejemplos": [
+      "a person carrying a backpack and bags",
+      "someone holding several boxes or bags",
+      "a person with a heavy backpack",
+      "persona cargando una mochila y paquetes"
+    ],
+    "aperturas": [
+      "veo que vienes cargando tus cosas",
+      "parece que traes bastante equipaje",
+      "con todo lo que cargas, vamos a lo importante"
+    ]
+  },
+  {
+    "situacion": "estudiante_portatil",
+    "ejemplos": [
+      "a student with a laptop and books",
+      "a person with a laptop sitting at a table",
+      "a person holding notebooks and studying",
+      "estudiante con computador portátil y libros"
+    ],
+    "aperturas": [
+      "veo que vienes con tus cosas de estudio",
+      "parece que estás en plena jornada de estudio",
+      "se nota que andas con trabajo por hacer"
+    ]
+  },
+  {
+    "situacion": "lectura_escritura",
+    "ejemplos": [
+      "a person reading a book",
+      "someone writing in a notebook",
+      "a person holding a paper or document",
+      "persona leyendo o escribiendo"
+    ],
+    "aperturas": [
+      "veo que estabas leyendo con atención, gracias por pausar para preguntarme",
+      "parece que estás dedicando tiempo a tus apuntes",
+      "veo que traes papeles en la mano"
+    ]
+  },
+  {
+    "situacion": "uniforme_trabajo",
+    "ejemplos": [
+      "a person wearing a uniform or formal work clothes",
+      "someone in a suit and tie",
+      "a professor or staff member in professional attire",
+      "persona con uniforme o ropa formal"
+    ],
+    "aperturas": [
+      "veo que estás en plena jornada de trabajo",
+      "se nota que vienes de una jornada profesional",
+      "gracias por sacar un momento en medio de tus labores"
+    ]
+  },
+  {
+    "situacion": "grupo",
+    "ejemplos": [
+      "a group of people standing together",
+      "several people next to each other",
+      "two friends together in front of the camera",
+      "three or four people gathered around",
+      "grupo de personas juntas"
+    ],
+    "aperturas": [
+      "veo que vienen acompañados",
+      "veo que son varios, los atiendo a todos",
+      "qué bueno que vengan en grupo"
+    ]
+  },
+  {
+    "situacion": "conversando",
+    "ejemplos": [
+      "two people talking to each other",
+      "people chatting and laughing together",
+      "persona conversando con alguien más"
+    ],
+    "aperturas": [
+      "veo que estaban conversando, gracias por incluirme",
+      "interrumpo una buena charla, pero con gusto les ayudo"
+    ]
+  },
+  {
+    "situacion": "pensativo_curioso",
+    "ejemplos": [
+      "a thoughtful person looking up at the sky",
+      "someone with a curious expression looking at the robot",
+      "person looking pensive with hand on chin",
+      "a curious person tilting their head",
+      "persona pensativa y curiosa"
+    ],
+    "aperturas": [
+      "veo que algo te generó curiosidad",
+      "parece que te quedaste pensando en esto",
+      "me gusta que te hagas preguntas"
+    ]
+  },
+  {
+    "situacion": "mirada_fija_robot",
+    "ejemplos": [
+      "a person staring at the robot",
+      "someone looking directly into the camera",
+      "a person observing the robot closely",
+      "persona mirando fijamente al robot"
+    ],
+    "aperturas": [
+      "veo que me observas con atención",
+      "me alegra que te intereses por mí",
+      "es normal sentir curiosidad por un robot"
+    ]
+  },
+  {
+    "situacion": "acercamiento",
+    "ejemplos": [
+      "a person approaching the robot and standing very close",
+      "someone walking toward the camera",
+      "a person coming closer to talk",
+      "persona que se acerca al robot"
+    ],
+    "aperturas": [
+      "veo que te acercas con interés",
+      "gracias por acercarte",
+      "te doy la bienvenida a mi espacio, te escucho"
+    ]
+  },
+  {
+    "situacion": "espera_fila",
+    "ejemplos": [
+      "a person standing and waiting patiently",
+      "people waiting in line",
+      "someone waiting for their turn",
+      "persona esperando su turno"
+    ],
+    "aperturas": [
+      "gracias por esperar con paciencia",
+      "veo que esperabas tu turno, aquí estoy para ti"
+    ]
+  },
+  {
+    "situacion": "sentado_descanso",
+    "ejemplos": [
+      "a person sitting on a bench resting",
+      "someone seated in a chair",
+      "a person sitting down relaxed",
+      "persona sentada descansando"
+    ],
+    "aperturas": [
+      "veo que estás tomando un descanso",
+      "qué bueno encontrarte en un momento tranquilo"
+    ]
+  },
+  {
+    "situacion": "senalando",
+    "ejemplos": [
+      "a person pointing at something with their finger",
+      "someone pointing at a sign or a screen",
+      "a person pointing at the robot",
+      "persona señalando algo"
+    ],
+    "aperturas": [
+      "veo que señalas algo",
+      "noto que quieres mostrarme algo",
+      "parece que algo captó tu atención"
+    ]
+  },
+  {
+    "situacion": "celular",
+    "ejemplos": [
+      "a person looking at their phone",
+      "someone holding a smartphone",
+      "a person typing on a cellphone",
+      "persona usando el celular"
+    ],
+    "aperturas": [
+      "veo que tienes el celular en la mano",
+      "parece que estás pendiente de tu celular"
+    ]
+  },
+  {
+    "situacion": "tomando_foto",
+    "ejemplos": [
+      "a person taking a photo with a phone",
+      "someone recording a video of the robot",
+      "a person holding a camera",
+      "persona tomando fotos o grabando video"
+    ],
+    "aperturas": [
+      "veo que quieres guardar el momento en una foto",
+      "me gusta salir en las fotos, puedes tomarla con confianza",
+      "veo que me estás grabando, voy a mostrar mi mejor ángulo"
+    ]
+  },
+  {
+    "situacion": "audifonos_musica",
+    "ejemplos": [
+      "a person wearing headphones",
+      "someone with earphones listening to music",
+      "persona con audífonos"
+    ],
+    "aperturas": [
+      "veo que traes audífonos, gracias por quitártelos un momento para hablar conmigo",
+      "parece que venías escuchando música"
+    ]
+  },
+  {
+    "situacion": "mano_levantada",
+    "ejemplos": [
+      "a person raising their hand",
+      "someone asking for attention with a raised hand",
+      "persona levantando la mano"
+    ],
+    "aperturas": [
+      "veo que levantas la mano",
+      "te vi pidiendo la palabra"
+    ]
+  },
+  {
+    "situacion": "aplauso_pulgar",
+    "ejemplos": [
+      "a person clapping their hands",
+      "someone giving a thumbs up",
+      "a person making an approving gesture",
+      "persona aplaudiendo o con el pulgar arriba"
+    ],
+    "aperturas": [
+      "gracias por ese gesto tan amable",
+      "se agradece ese reconocimiento"
+    ]
+  },
+  {
+    "situacion": "brazos_cruzados",
+    "ejemplos": [
+      "a person standing with arms crossed",
+      "someone with crossed arms looking skeptical",
+      "persona con los brazos cruzados"
+    ],
+    "aperturas": [
+      "veo que vienes con ojo crítico, me gusta que cuestiones",
+      "noto cierta duda, con gusto te lo explico bien"
+    ]
+  },
+  {
+    "situacion": "nino",
+    "ejemplos": [
+      "a child looking at the camera",
+      "a young kid standing in front of the robot",
+      "a little boy or girl playing",
+      "niño o niña mirando al robot"
+    ],
+    "aperturas": [
+      "qué bueno tener una visita tan joven",
+      "veo que nos visita una persona muy joven",
+      "me alegra que los más pequeños quieran conocerme"
+    ]
+  },
+  {
+    "situacion": "adulto_mayor",
+    "ejemplos": [
+      "an elderly person with white hair",
+      "an older man or woman looking at the robot",
+      "a senior citizen using a cane",
+      "persona mayor o de la tercera edad"
+    ],
+    "aperturas": [
+      "es un gusto recibir su visita",
+      "con toda la calma y con mucho gusto, aquí estoy para usted"
+    ]
+  },
+  {
+    "situacion": "gafas",
+    "ejemplos": [
+      "a person wearing glasses",
+      "someone with eyeglasses looking at the robot",
+      "persona con gafas o lentes"
+    ],
+    "aperturas": [
+      "veo que usas gafas, seguro lees todo con detalle",
+      "buenos lentes, se ven de alguien que investiga"
+    ]
+  },
+  {
+    "situacion": "gorra_sombrero",
+    "ejemplos": [
+      "a person wearing a cap or hat",
+      "someone with a baseball cap",
+      "persona con gorra o sombrero"
+    ],
+    "aperturas": [
+      "me gusta tu estilo con esa gorra",
+      "veo que vienes con buen estilo"
+    ]
+  },
+  {
+    "situacion": "frio_abrigo",
+    "ejemplos": [
+      "a person wearing a coat and scarf",
+      "someone in a warm jacket, it looks cold",
+      "a person wearing a hoodie",
+      "persona con chaqueta o abrigo"
+    ],
+    "aperturas": [
+      "parece que hace frío y vienes con buen abrigo",
+      "buena idea la chaqueta, el clima manda"
+    ]
+  },
+  {
+    "situacion": "calor_sol",
+    "ejemplos": [
+      "a person sweating under the hot sun",
+      "someone fanning themselves because of the heat",
+      "a person wearing sunglasses on a sunny day",
+      "persona con calor o gafas de sol"
+    ],
+    "aperturas": [
+      "parece que el calor se hace sentir",
+      "con este clima, es buena idea hidratarse"
+    ]
+  },
+  {
+    "situacion": "paraguas_lluvia",
+    "ejemplos": [
+      "a person holding an umbrella",
+      "someone wearing a raincoat on a rainy day",
+      "persona con paraguas"
+    ],
+    "aperturas": [
+      "veo que traes paraguas",
+      "parece que viene lloviendo afuera"
+    ]
+  },
+  {
+    "situacion": "comida_bebida",
+    "ejemplos": [
+      "a person holding a cup of coffee",
+      "someone eating a snack or drinking a beverage",
+      "a person with a water bottle",
+      "persona tomando café o comiendo algo"
+    ],
+    "aperturas": [
+      "veo que vienes con tu café, buen plan",
+      "espero que disfrutes lo que llevas en la mano"
+    ]
+  },
+  {
+    "situacion": "deportista",
+    "ejemplos": [
+      "a person wearing sportswear and sneakers",
+      "someone exercising or jogging",
+      "an athlete in a sports jersey",
+      "persona con ropa deportiva"
+    ],
+    "aperturas": [
+      "veo que vienes con ropa deportiva, seguro con mucha energía",
+      "se nota que te gusta mantenerte activo"
+    ]
+  },
+  {
+    "situacion": "baile_juego",
+    "ejemplos": [
+      "a person dancing happily",
+      "someone playing and moving around",
+      "persona bailando o jugando"
+    ],
+    "aperturas": [
+      "veo que vienes con ganas de moverte",
+      "qué buena energía, así se anima cualquiera"
+    ]
+  },
+  {
+    "situacion": "evento_formal",
+    "ejemplos": [
+      "people dressed up at a ceremony or event",
+      "a person in elegant clothes at a graduation",
+      "a person wearing a name badge at a conference",
+      "persona en un evento o ceremonia"
+    ],
+    "aperturas": [
+      "veo que estás en un evento especial",
+      "qué bueno compartir con ustedes en un día tan especial"
+    ]
+  },
+  {
+    "situacion": "mascota_acompanante",
+    "ejemplos": [
+      "a person holding a dog",
+      "someone walking with a pet",
+      "persona con una mascota"
+    ],
+    "aperturas": [
+      "veo que vienes con compañía de cuatro patas",
+      "qué linda compañía traes"
+    ]
+  },
+  {
+    "situacion": "entrando_llegando",
+    "ejemplos": [
+      "a person entering the room through the door",
+      "someone just arriving and looking around",
+      "persona que acaba de llegar"
+    ],
+    "aperturas": [
+      "te doy la bienvenida, acabas de llegar",
+      "qué gusto verte llegar"
+    ]
+  },
+  {
+    "situacion": "despedida_gesto",
+    "ejemplos": [
+      "a person waving goodbye",
+      "someone leaving and turning back to wave",
+      "persona despidiéndose con la mano"
+    ],
+    "aperturas": [
+      "veo que ya te despides, antes de irte",
+      "antes de irte, esto puede servirte"
+    ]
+  }
+]

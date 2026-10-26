@@ -6,6 +6,7 @@ from prompt.principal import construir_prompt
 from utils.milvus.busqueda import search
 from utils.milvus.indexar import indexar
 from utils.gpt.gptapi import generar_respuesta
+from utils.personalizacion import elegir_apertura
 from utils.config import (
     COL_CONOCIMIENTO,
     COL_INTERACCIONES,
@@ -92,6 +93,94 @@ _RESPUESTAS_GENERICAS = {
 }
 
 
+# Etiquetas que significan "no hay nombre": nunca se dicen ni se guardan.
+_ETIQUETAS_SIN_NOMBRE = {"", "persona no identificada", "(sin nombre)", "sin nombre"}
+_FRASE_SIN_NOMBRE = r"(?:persona\s+no\s+identificada|\(sin\s+nombre\))"
+
+
+def _etiqueta_real(etiqueta) -> str:
+    """Devuelve la etiqueta si es un nombre real; si no, cadena vacía."""
+    etiqueta = (etiqueta or "").strip()
+    return "" if etiqueta.lower() in _ETIQUETAS_SIN_NOMBRE else etiqueta
+
+
+def _limpiar_sin_nombre(texto: str) -> str:
+    """Quita de un texto las frases 'Persona no identificada' / '(sin nombre)'."""
+    texto = re.sub(rf"^\s*{_FRASE_SIN_NOMBRE}\s*[,:;]\s*", "", texto, flags=re.IGNORECASE)
+    texto = re.sub(rf"\s*,\s*{_FRASE_SIN_NOMBRE}", "", texto, flags=re.IGNORECASE)
+    texto = texto.strip()
+    return texto[0].upper() + texto[1:] if texto else texto
+
+
+# Palabras iniciales que son nombres propios: conservan la mayúscula tras "Nombre, ".
+_NOMBRES_PROPIOS = {"universidad", "prometeo", "colombia", "bogotá", "bogota", "libre"}
+
+
+def _anteponer_nombre(etiqueta: str, respuesta: str, apertura: str | None = None) -> str:
+    """
+    Personaliza una respuesta de caché SIN modificar su contenido.
+
+    - nombre + apertura: "Pedro, veo que buscas orientación. El sol se ve…"
+    - solo apertura:     "Veo que buscas orientación. El sol se ve…"
+    - solo nombre:       "Pedro, el sol se ve…" (ajusta la mayúscula inicial; no toca
+                         siglas ni nombres propios como R-One, UNAL o Prometeo)
+    - ninguno:           la respuesta tal cual.
+    """
+    if apertura:
+        apertura = apertura.strip().rstrip(".,;:!?")
+        if etiqueta:
+            return f"{etiqueta}, {apertura}. {respuesta}"
+        return f"{apertura[0].upper()}{apertura[1:]}. {respuesta}"
+    if not etiqueta:
+        return respuesta
+    primera = respuesta.split(maxsplit=1)[0] if respuesta.strip() else ""
+    palabra = re.sub(r"[^\wáéíóúüñÁÉÍÓÚÜÑ-]", "", primera)
+    es_normal = (
+        primera[:1].isalpha()
+        and primera[:1].isupper()
+        and palabra[1:] == palabra[1:].lower()      # sin otras mayúsculas (UNAL, R-One)
+        and "-" not in palabra
+        and palabra.lower() not in _NOMBRES_PROPIOS
+    )
+    if es_normal:
+        respuesta = respuesta[0].lower() + respuesta[1:]
+    return f"{etiqueta}, {respuesta}"
+
+
+def _terminos_nombre(etiqueta: str) -> list[str]:
+    """Etiqueta completa y cada palabra suya (>=3 letras), de mayor a menor longitud."""
+    etiqueta = _etiqueta_real(etiqueta)
+    if not etiqueta:
+        return []
+    terminos = {etiqueta} | {p for p in etiqueta.split() if len(p) >= 3}
+    return sorted(terminos, key=len, reverse=True)
+
+
+def _quitar_nombre(respuesta: str, etiqueta: str) -> str | None:
+    """
+    Elimina el nombre de la persona de la respuesta antes de guardarla en Milvus.
+    Devuelve None si el nombre sigue apareciendo (no se debe indexar).
+    """
+    texto = _limpiar_sin_nombre(respuesta)
+    for t in _terminos_nombre(etiqueta):
+        nombre = re.escape(t)
+        # "Andrea, ..." al inicio de la respuesta
+        texto = re.sub(rf"^\s*{nombre}\s*[,:;]\s*", "", texto, flags=re.IGNORECASE)
+        # "¡Hola, Andrea!" / "gracias, Andrea." / "..., Andrea, ..."
+        texto = re.sub(rf"\s*,\s*{nombre}\b", "", texto, flags=re.IGNORECASE)
+
+    texto = texto.strip()
+    if texto:
+        texto = texto[0].upper() + texto[1:]
+
+    if re.search(_FRASE_SIN_NOMBRE, texto, flags=re.IGNORECASE):
+        return None
+    for t in _terminos_nombre(etiqueta):
+        if re.search(rf"\b{re.escape(t)}\b", texto, flags=re.IGNORECASE):
+            return None
+    return texto or None
+
+
 def _respuesta_interaccion_almacenable(respuesta) -> bool:
     if not isinstance(respuesta, str):
         return False
@@ -156,15 +245,18 @@ def responder(obj, secuencias):
             solo_exacto=True,
         )
 
-    etiqueta = getattr(obj, "etiqueta", None) or "Persona no identificada"
+    # Solo hay etiqueta si es un nombre real; "Persona no identificada" = sin nombre.
+    etiqueta = _etiqueta_real(getattr(obj, "etiqueta", None))
 
     # ── Ruta caché ────────────────────────────────────────────────────────────
-    # La respuesta cacheada no pasa por el LLM, así que el contexto visual y la
-    # etiqueta se incorporan aquí manualmente antes de devolver el resultado.
+    # La respuesta cacheada no pasa por el LLM, así que el nombre se incorpora
+    # aquí manualmente (solo si existe) antes de devolver el resultado.
     if cache["hit"]:
-        respuesta_raw = str(cache["data"]["respuesta"])
+        respuesta_raw = _limpiar_sin_nombre(str(cache["data"]["respuesta"]))
+        # Apertura según el contexto visual (embeddings locales, sin LLM).
+        apertura = elegir_apertura(getattr(obj, "contexto", None))
         return {
-            "respuesta": f"{etiqueta}, {respuesta_raw}",
+            "respuesta": _anteponer_nombre(etiqueta, respuesta_raw, apertura),
             "movimiento": _normalizar_movimiento(cache["data"]["movimientos"]),
             "fuente": "cache",
             "etiqueta": etiqueta,
@@ -175,18 +267,23 @@ def responder(obj, secuencias):
     # devuelve una respuesta ya personalizada, no hace falta prefijo manual.
     prompt = construir_prompt(obj, pregunta_limpia, secuencias)
     salida = generar_respuesta(prompt)
+    salida["respuesta"] = _limpiar_sin_nombre(str(salida["respuesta"]))
 
     # Indexar la interacción si no tenía groserías y la respuesta es almacenable.
+    # El nombre de la persona NO se guarda en la base vectorial: se elimina de la
+    # respuesta antes de indexar (si no se puede quitar limpiamente, no se indexa).
     if (
         not tenia_groseria
         and _respuesta_interaccion_almacenable(salida.get("respuesta"))
     ):
-        indexar(
-            pregunta_limpia,
-            salida["respuesta"],
-            salida["movimientos"],
-            collection_name=COL_INTERACCIONES,
-        )
+        respuesta_sin_nombre = _quitar_nombre(salida["respuesta"], etiqueta)
+        if respuesta_sin_nombre:
+            indexar(
+                pregunta_limpia,
+                respuesta_sin_nombre,
+                salida["movimientos"],
+                collection_name=COL_INTERACCIONES,
+            )
 
     return {
         "respuesta": salida["respuesta"],
