@@ -222,5 +222,12 @@ dataset/set.zip
 
 *.env
 
+# Milvus Lite: lo que el proceso escribe al buscar o indexar.
+# schema.json y manifest.json sí se versionan.
 *.hnsw.idx
 *.arrow
+**/androide_milvus.db/**/*.parquet
+**/androide_milvus.db/**/manifest.json.prev
+**/androide_milvus.db/LOCK
+**/androide_milvus.db/.database-staging/
+**/androide_milvus.db/databases/
