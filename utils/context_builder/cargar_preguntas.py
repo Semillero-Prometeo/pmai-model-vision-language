@@ -1,9 +1,6 @@
-"""Carga el JSON de preguntas en la colección conocimiento.
+"""Carga preguntas_respuestas.json en la colección conocimiento.
 
-En la Jetson, desde la raíz de este repositorio:
-
-    PYTHONPATH=. python -m utils.context_builder.cargar_preguntas
-
+Lo invoca scripts/seed-conocimiento.sh dentro de pmai-core.
 No vuelve a insertar una pregunta que ya esté guardada con el mismo texto.
 """
 
