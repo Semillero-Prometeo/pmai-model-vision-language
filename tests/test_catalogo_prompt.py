@@ -24,3 +24,13 @@ def test_prompt_has_no_fixed_gesture_ids():
     assert "· 33" not in prompt
     assert "· 34" not in prompt
     assert "| 4 | Saludo | 1 |  |" in prompt
+
+
+def test_prompt_personalization_and_datos_at_end():
+    prompt = construir_prompt(Obj(), "Hola", [{"id": 4, "name": "Saludo", "arduino_id": 1, "description": ""}])
+    assert "PERSONALIZACIÓN OBLIGATORIA" in prompt
+    assert "NUNCA la menciones ni la repitas" in prompt
+    assert prompt.rfind("[PERSONA_DETECTADA]") > prompt.rfind("<ejemplos>")
+    assert '"movimientos": []' in prompt
+    assert '"movimientos": [34' not in prompt
+    assert "Saludo brazo derecho" not in prompt
