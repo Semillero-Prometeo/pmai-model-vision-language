@@ -300,16 +300,17 @@ def responder(obj, secuencias):
             milvus_caido,
         )
 
-    etiqueta = getattr(obj, "etiqueta", None) or "Persona no identificada"
+    etiqueta = _etiqueta_real(getattr(obj, "etiqueta", None))
 
     # ── Ruta caché ────────────────────────────────────────────────────────────
-    # La respuesta cacheada no pasa por el LLM, así que el contexto visual y la
-    # etiqueta se incorporan aquí manualmente antes de devolver el resultado.
+    # La respuesta cacheada no pasa por el LLM, así que el nombre se incorpora
+    # aquí manualmente (solo si existe) antes de devolver el resultado.
     if cache["hit"]:
-        respuesta_raw = str(cache["data"]["respuesta"])
+        respuesta_raw = _limpiar_sin_nombre(str(cache["data"]["respuesta"]))
+        apertura = elegir_apertura(getattr(obj, "contexto", None))
         logger.info("accion_respuesta fuente=cache")
         return {
-            "respuesta": f"{etiqueta}, {respuesta_raw}",
+            "respuesta": _anteponer_nombre(etiqueta, respuesta_raw, apertura),
             "movimientos": _movimientos_de_salida(
                 cache["data"].get("movimientos"), permitidos
             ),
@@ -323,25 +324,30 @@ def responder(obj, secuencias):
     logger.info("accion_llm_start")
     prompt = construir_prompt(obj, pregunta_limpia, secuencias)
     salida = generar_respuesta(prompt)
+    salida["respuesta"] = _limpiar_sin_nombre(str(salida.get("respuesta") or ""))
     logger.info(
         "accion_respuesta fuente=llm backend=%s", salida.get("_backend", "gguf")
     )
 
     # Indexar la interacción si no tenía groserías y la respuesta es almacenable.
+    # El nombre de la persona NO se guarda en la base vectorial: se elimina de la
+    # respuesta antes de indexar (si no se puede quitar limpiamente, no se indexa).
     if (
         not milvus_caido
         and not tenia_groseria
         and _respuesta_interaccion_almacenable(salida.get("respuesta"))
     ):
-        try:
-            indexar(
-                pregunta_limpia,
-                salida["respuesta"],
-                salida["movimientos"],
-                collection_name=COL_INTERACCIONES,
-            )
-        except Exception:
-            logger.exception("No se pudo indexar la interacción en Milvus")
+        respuesta_sin_nombre = _quitar_nombre(salida["respuesta"], etiqueta)
+        if respuesta_sin_nombre:
+            try:
+                indexar(
+                    pregunta_limpia,
+                    respuesta_sin_nombre,
+                    salida.get("movimientos"),
+                    collection_name=COL_INTERACCIONES,
+                )
+            except Exception:
+                logger.exception("No se pudo indexar la interacción en Milvus")
 
     return {
         "respuesta": salida["respuesta"],
