@@ -9,6 +9,7 @@ load_dotenv(PROJECT_ROOT / ".env", override=False)
 
 MILVUS_DB_PATH = str(PROJECT_ROOT / "utils" / "milvus" / "androide_milvus.db")
 MOVIMIENTOS_PATH = PROJECT_ROOT / "data" / "movimientos.json"
+APERTURAS_PATH = PROJECT_ROOT / "data" / "aperturas.json"
 
 # https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
 EMBED_MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"  # definido en la base vectorial, ver si lo dejamos o no
@@ -26,6 +27,7 @@ COL_INTERACCIONES = "interacciones"
 # En Milvus COSINE, menor distancia = mejor coincidencia.
 UMBRAL_CONOCIMIENTO = 0.35  # distancia máxima razonable para conocimiento
 UMBRAL_INTERACCIONES = 0.40  # umbral algo más estricto para interacciones
+UMBRAL_APERTURA = 0.60
 
 
 # parametros de busqueda para el índice HNSW en Milvus
