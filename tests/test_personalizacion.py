@@ -2,6 +2,7 @@ import sys
 
 import numpy as np
 
+import utils.main as main_module
 import utils.personalizacion as pers
 
 
@@ -52,3 +53,63 @@ def test_elegir_apertura_embed_failure_is_none(monkeypatch):
 
     _patch_embed(monkeypatch, boom)
     assert pers.elegir_apertura("person smiling") is None
+
+
+def test_etiqueta_real_keeps_a_name():
+    assert main_module._etiqueta_real("Andrea") == "Andrea"
+    assert main_module._etiqueta_real("  Pedro  ") == "Pedro"
+
+
+def test_etiqueta_real_drops_placeholder():
+    assert main_module._etiqueta_real("Persona no identificada") == ""
+    assert main_module._etiqueta_real("") == ""
+    assert main_module._etiqueta_real(None) == ""
+    assert main_module._etiqueta_real("(sin nombre)") == ""
+
+
+def test_limpiar_sin_nombre_strips_prefix():
+    assert (
+        main_module._limpiar_sin_nombre("Persona no identificada, el semillero Prometeo.")
+        == "El semillero Prometeo."
+    )
+
+
+def test_anteponer_nombre_with_and_without_apertura():
+    assert (
+        main_module._anteponer_nombre("Andrea", "El semillero Prometeo.")
+        == "Andrea, el semillero Prometeo."
+    )
+    assert (
+        main_module._anteponer_nombre(
+            "Andrea",
+            "El semillero Prometeo.",
+            "veo que buscas orientacion",
+        )
+        == "Andrea, veo que buscas orientacion. El semillero Prometeo."
+    )
+    assert (
+        main_module._anteponer_nombre(
+            "",
+            "El semillero Prometeo.",
+            "veo que buscas orientacion",
+        )
+        == "Veo que buscas orientacion. El semillero Prometeo."
+    )
+    assert main_module._anteponer_nombre("", "El semillero Prometeo.") == "El semillero Prometeo."
+
+
+def test_anteponer_nombre_keeps_sigla_and_r_one():
+    assert main_module._anteponer_nombre("Andrea", "R-One está listo.") == "Andrea, R-One está listo."
+    assert main_module._anteponer_nombre("Andrea", "UNAL tiene sede aquí.") == "Andrea, UNAL tiene sede aquí."
+
+
+def test_quitar_nombre_strips_prefix_and_skips_embedded():
+    assert (
+        main_module._quitar_nombre("Andrea, el semillero Prometeo.", "Andrea")
+        == "El semillero Prometeo."
+    )
+    assert main_module._quitar_nombre("Hola Andrea, ¿cómo estás?", "Andrea") is None
+    assert (
+        main_module._quitar_nombre("El semillero Prometeo.", "Persona no identificada")
+        == "El semillero Prometeo."
+    )

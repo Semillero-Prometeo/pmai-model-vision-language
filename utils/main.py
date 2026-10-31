@@ -16,6 +16,7 @@ from utils.config import (
 from utils.gpt.gptapi import generar_respuesta
 from utils.milvus.busqueda import search
 from utils.milvus.indexar import indexar
+from utils.personalizacion import elegir_apertura
 
 logger = logging.getLogger(__name__)
 
@@ -125,6 +126,94 @@ _RESPUESTAS_GENERICAS = {
     "no lo sé",
     "no lo se",
 }
+
+
+# Etiquetas que significan "no hay nombre": nunca se dicen ni se guardan.
+_ETIQUETAS_SIN_NOMBRE = {"", "persona no identificada", "(sin nombre)", "sin nombre"}
+_FRASE_SIN_NOMBRE = r"(?:persona\s+no\s+identificada|\(sin\s+nombre\))"
+
+
+def _etiqueta_real(etiqueta) -> str:
+    """Devuelve la etiqueta si es un nombre real; si no, cadena vacía."""
+    etiqueta = (etiqueta or "").strip()
+    return "" if etiqueta.lower() in _ETIQUETAS_SIN_NOMBRE else etiqueta
+
+
+def _limpiar_sin_nombre(texto: str) -> str:
+    """Quita de un texto las frases 'Persona no identificada' / '(sin nombre)'."""
+    texto = re.sub(rf"^\s*{_FRASE_SIN_NOMBRE}\s*[,:;]\s*", "", texto, flags=re.IGNORECASE)
+    texto = re.sub(rf"\s*,\s*{_FRASE_SIN_NOMBRE}", "", texto, flags=re.IGNORECASE)
+    texto = texto.strip()
+    return texto[0].upper() + texto[1:] if texto else texto
+
+
+# Palabras iniciales que son nombres propios: conservan la mayúscula tras "Nombre, ".
+_NOMBRES_PROPIOS = {"universidad", "prometeo", "colombia", "bogotá", "bogota", "libre"}
+
+
+def _anteponer_nombre(etiqueta: str, respuesta: str, apertura: str | None = None) -> str:
+    """
+    Personaliza una respuesta de caché SIN modificar su contenido.
+
+    - nombre + apertura: "Pedro, veo que buscas orientación. El sol se ve…"
+    - solo apertura:     "Veo que buscas orientación. El sol se ve…"
+    - solo nombre:       "Pedro, el sol se ve…" (ajusta la mayúscula inicial; no toca
+                         siglas ni nombres propios como R-One, UNAL o Prometeo)
+    - ninguno:           la respuesta tal cual.
+    """
+    if apertura:
+        apertura = apertura.strip().rstrip(".,;:!?")
+        if etiqueta:
+            return f"{etiqueta}, {apertura}. {respuesta}"
+        return f"{apertura[0].upper()}{apertura[1:]}. {respuesta}"
+    if not etiqueta:
+        return respuesta
+    primera = respuesta.split(maxsplit=1)[0] if respuesta.strip() else ""
+    palabra = re.sub(r"[^\wáéíóúüñÁÉÍÓÚÜÑ-]", "", primera)
+    es_normal = (
+        primera[:1].isalpha()
+        and primera[:1].isupper()
+        and palabra[1:] == palabra[1:].lower()      # sin otras mayúsculas (UNAL, R-One)
+        and "-" not in palabra
+        and palabra.lower() not in _NOMBRES_PROPIOS
+    )
+    if es_normal:
+        respuesta = respuesta[0].lower() + respuesta[1:]
+    return f"{etiqueta}, {respuesta}"
+
+
+def _terminos_nombre(etiqueta: str) -> list[str]:
+    """Etiqueta completa y cada palabra suya (>=3 letras), de mayor a menor longitud."""
+    etiqueta = _etiqueta_real(etiqueta)
+    if not etiqueta:
+        return []
+    terminos = {etiqueta} | {p for p in etiqueta.split() if len(p) >= 3}
+    return sorted(terminos, key=len, reverse=True)
+
+
+def _quitar_nombre(respuesta: str, etiqueta: str) -> str | None:
+    """
+    Elimina el nombre de la persona de la respuesta antes de guardarla en Milvus.
+    Devuelve None si el nombre sigue apareciendo (no se debe indexar).
+    """
+    texto = _limpiar_sin_nombre(respuesta)
+    for t in _terminos_nombre(etiqueta):
+        nombre = re.escape(t)
+        # "Andrea, ..." al inicio de la respuesta
+        texto = re.sub(rf"^\s*{nombre}\s*[,:;]\s*", "", texto, flags=re.IGNORECASE)
+        # "¡Hola, Andrea!" / "gracias, Andrea." / "..., Andrea, ..."
+        texto = re.sub(rf"\s*,\s*{nombre}\b", "", texto, flags=re.IGNORECASE)
+
+    texto = texto.strip()
+    if texto:
+        texto = texto[0].upper() + texto[1:]
+
+    if re.search(_FRASE_SIN_NOMBRE, texto, flags=re.IGNORECASE):
+        return None
+    for t in _terminos_nombre(etiqueta):
+        if re.search(rf"\b{re.escape(t)}\b", texto, flags=re.IGNORECASE):
+            return None
+    return texto or None
 
 
 def _respuesta_interaccion_almacenable(respuesta) -> bool:
