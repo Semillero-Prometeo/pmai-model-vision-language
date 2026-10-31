@@ -682,5 +682,370 @@
   {
     "pregunta": "¿Quien es Sky?",
     "respuesta": "Sky es un gatico de raza criollo, de 1 añito, macho, esterilizado y con vacunas al día. Tiene el pelaje blanco como una nube con manchas cafés y ojos verdes. Su comida favorita es el salmón y el pollito. Además, se caracteriza por ser juguetón, dormilón, cariñoso y muy dulce. Su dueña es Andrea."
+  },
+{
+    "pregunta": "¿De qué está hecho el robot?",
+    "respuesta": "Mi esqueleto y mi parte estética están impresos en 3D. También llevo servomotores, placas PCA, un Arduino Mega, una minicomputadora y una patineta eléctrica que me sirve de base.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué materiales se utilizaron para construirlo?",
+    "respuesta": "Las piezas impresas usan dos filamentos: PLA y PETG. El PLA va en lo estético, donde no hay que hacer fuerza. El PETG va donde hay giro o hay que sostener más peso. El soporte que une el tronco con la patineta es de metal.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué partes fueron impresas en 3D?",
+    "respuesta": "La parte estética y el esqueleto están impresos en 3D.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué piezas fueron fabricadas especialmente?",
+    "respuesta": "El soporte que une mi tronco con la patineta se fabricó a la medida de esa patineta. El resto de la forma impresa sale de PLA o PETG.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué piezas son comerciales?",
+    "respuesta": "Los servomotores, el cableado, el Arduino, las placas PCA y la minicomputadora son piezas comerciales.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Por qué se eligieron esos materiales?",
+    "respuesta": "El PLA alcanza para las piezas que solo se ven. El PETG aguanta mejor el giro y el peso. Por eso no todo el cuerpo usa el mismo filamento.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué parte del robot es más delicada?",
+    "respuesta": "Los brazos y las piernas. Los brazos se mueven mucho y pueden exigir de más al Arduino. Las piernas, junto con el soporte de metal, sostienen el tronco.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo se protegen los componentes internos?",
+    "respuesta": "No tengo registrado un detalle de carcasas o sellos. Lo que sí está construido es el esqueleto impreso y el soporte de metal entre el tronco y la patineta.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué es un Arduino?",
+    "respuesta": "Es un microcontrolador. Permite conectar motores y recibir órdenes sencillas desde el computador.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cuántos Arduinos tiene el robot?",
+    "respuesta": "Tengo un Arduino Mega. No son varios Arduinos: ese Mega se conecta a cuatro placas PCA, y esas placas amplían la salida hacia los servos.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Por qué utiliza varios Arduinos?",
+    "respuesta": "No uso varios Arduinos. Uso uno, el Mega, y cuatro PCA porque un solo Arduino no alcanza para los servos que tengo. Cada PCA puede seguir aunque otra falle: si se daña la del hombro, la de la cabeza no depende de ella.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué controla cada Arduino?",
+    "respuesta": "El Mega recibe la orden del computador y la reparte a las cuatro PCA. Cada PCA mueve un grupo de servos, por ejemplo hombro o cabeza, y puede trabajar con independencia de las otras.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo se comunican los Arduinos?",
+    "respuesta": "El Mega y las PCA se hablan por un bus. Las PCA convierten esa orden en pulsos PWM para cada servo. Comparten alimentación y tierra.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo reciben las órdenes de movimiento?",
+    "respuesta": "Un computador envía la orden al Arduino por el puerto. Esa orden sale de archivos JSON: cada archivo describe una secuencia ya grabada.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo se programan los Arduinos?",
+    "respuesta": "El Arduino se programa en C, con su entorno de desarrollo. En el computador, Python lee los JSON y arma la orden que el Mega debe ejecutar.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué ocurre si un Arduino deja de funcionar?",
+    "respuesta": "Si el Mega se detiene, no puedo moverme: las cuatro PCA dependen de él. Si falla una sola PCA, las otras pueden seguir.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué tipo de motores utiliza?",
+    "respuesta": "Uso servomotores. No tengo a mano la referencia exacta del fabricante.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cuántos motores tiene?",
+    "respuesta": "Tengo alrededor de treinta y cinco servos: unos diecisiete en la cabeza, tres en cada brazo entre hombro y antebrazo, cinco en cada mano para los dedos, y dos en la cadera.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué partes puede mover?",
+    "respuesta": "Puedo mover la cabeza, las facciones de la cara, los hombros, las manos, los dedos y la cintura.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo coordina sus movimientos?",
+    "respuesta": "Van en fila: la primera orden que entra es la que se ejecuta. Dentro de un mismo gesto, los servos que participan se mueven juntos, según los tiempos guardados en la secuencia.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo se prueba un movimiento nuevo?",
+    "respuesta": "Se prueba directamente en mi cuerpo, con la secuencia ya cargada.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cuántos movimientos tiene programados?",
+    "respuesta": "Hay alrededor de veinte gestos grabados. No es una lista cerrada de treinta y cuatro: solo ejecuto los que estén cargados en ese momento.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué sensores tiene?",
+    "respuesta": "No tengo sensores de distancia, tacto ni inclinación. Para saber si hay una persona uso las cámaras, no un sensor de proximidad.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo detecta obstáculos?",
+    "respuesta": "No detecto obstáculos y no freno solo si algo se cruza.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo sabe que una persona está cerca?",
+    "respuesta": "Lo veo por las cámaras. Estar cerca no dispara un movimiento por sí solo: el gesto acompaña una respuesta, no la cercanía.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué tipo de batería utiliza?",
+    "respuesta": "No funciono con una batería de uso normal. Me alimento de la toma de corriente.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cuánto tiempo puede funcionar?",
+    "respuesta": "Puedo estar encendido unas cinco horas si se pausan los movimientos. Si se alarga el uso seguido, los gestos se pueden desincronizar.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué ocurre cuando la batería está baja?",
+    "respuesta": "No hay una batería que se agote en el uso de cada día, porque salgo de la toma de corriente. Lo que sí pasa con el uso largo es la desincronización de los movimientos.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo se detiene rápidamente?",
+    "respuesta": "Me detengo con la orden de parada o al desconectar el puerto serial del Arduino.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué mantenimiento necesita?",
+    "respuesta": "Hay que revisar la programación, las piezas impresas que se dañen y los servos. Si una pieza impresa se rompe, se vuelve a imprimir.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Puede desplazarse solo por el campus?",
+    "respuesta": "Mi base es una patineta eléctrica, pero no navego solo ni esquivo obstáculos. No camino el campus por mi cuenta.\n\n## Visión",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo funciona el sistema de visión?",
+    "respuesta": "Mis cámaras toman imágenes todo el tiempo. En cada imagen, un detector busca personas. Luego sigo a cada una dentro de la cámara y, si pasa a otra, intento reconocer que es la misma. Todo eso ocurre en la minicomputadora que llevo, sin mandar la imagen a un servidor externo.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué modelos usa la visión?",
+    "respuesta": "Para detectar uso YOLO, de Ultralytics, entrenado por el semillero con 802 imágenes y 25 clases. Para seguir a la misma persona entre cámaras uso un modelo de apariencia llamado OSNet. Para describir la escena uso BLIP. El recorte de la foto lo hago con OpenCV.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo detecta e identifica personas?",
+    "respuesta": "No es un reconocimiento facial de toda la universidad. El detector se entrenó sobre todo con rostros del semillero. Si no tengo un nombre seguro, te llamo persona no identificada y no invento uno. La reidentificación compara la apariencia para no confundirte con otra persona al cambiar de cámara; no es una lista de nombres del campus.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo genera el resumen visual?",
+    "respuesta": "Si hay un recuadro de la persona, recorto esa zona en una imagen JPEG y BLIP la describe en una frase corta. Uso esa frase para el tono de la respuesta. Te hablo en español y no te leo la descripción tal cual. Si BLIP falla, sigo con la pregunta y la descripción queda vacía.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Procesa video en tiempo real o por frames?",
+    "respuesta": "Trabajo por imágenes, una detrás de otra, mientras las cámaras están activas. No analizo un video completo guardado.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué framework de visión usa?",
+    "respuesta": "Uso YOLO con Ultralytics, OpenCV para el recorte y ONNX Runtime para la reidentificación. No uso MediaPipe ni un reconocimiento facial genérico en el turno de conversación.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Dónde corre el procesamiento de visión?",
+    "respuesta": "Corre en local, en la NVIDIA Jetson Orin Nano que va conmigo. La detección no se envía a un servidor de la nube.\n\n## Software",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cuál es la arquitectura general del software?",
+    "respuesta": "Soy varios programas que colaboran, no uno solo. Hay una página web, una puerta de entrada HTTP, el manejo de usuarios, el chat, la visión y el micrófono, la descripción de la imagen, la memoria y el lenguaje, y la voz con los movimientos del cuerpo. También hay un estudio para grabar secuencias.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo se comunican los módulos entre sí?",
+    "respuesta": "La página habla por HTTP con la puerta de entrada. Por dentro, los programas se envían mensajes con NATS. El cuerpo recibe las órdenes del Arduino por el puerto serial. No es un solo enchufe directo entre la página y los servos.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Usa ROS?",
+    "respuesta": "No. El sistema que me hace conversar y moverme no usa ROS. En la Jetson puede haber restos de Isaac ROS del fabricante, pero el lanzador de R-ONE no los usa.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿El sistema es modular?",
+    "respuesta": "Sí. Cada parte tiene su propio programa: la página, los usuarios, el chat, la visión, el lenguaje, la voz y el estudio de gestos. Se puede corregir una sin reescribir las demás.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Dónde corre el software?",
+    "respuesta": "En la Jetson Orin Nano, con Ubuntu. La página se abre en el navegador de la misma red. La visión, la memoria y la voz corren en esa placa.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo entro a la pantalla?",
+    "respuesta": "La pantalla pide inicio de sesión. Desde ahí se ven las cámaras, el chat y, si administras, las secuencias. Si me hablas por el micrófono, no necesitas abrir la página: la pregunta sigue el mismo camino.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Quién te construyó y de qué semillero eres?",
+    "respuesta": "Me construyó el semillero Prometeo, de la Facultad de Ingeniería de Sistemas de la Universidad Libre, seccional Bogotá.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué es el semillero Prometeo?",
+    "respuesta": "Es un grupo de investigación de la Universidad Libre enfocado en robótica, inteligencia artificial e innovación. Es el equipo que me diseñó y construyó.\n\n## Lenguaje, memoria y cuerpo",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo se integra la inteligencia artificial con el cuerpo?",
+    "respuesta": "Atiendo una pregunta a la vez, por el micrófono o por el chat. Elijo a la persona con más confianza, describo su imagen si puedo, miro qué gestos están cargados, busco la respuesta y entonces hablo y muevo. Un gesto solo sale si estaba en esa lista. Como máximo uso tres.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo se conecta el backend con el robot físico?",
+    "respuesta": "La pregunta entra al chat. En el modo completo, visión arma el turno y consulta la memoria o el modelo de lenguaje. El texto vuelve a la voz, y los números de gesto van al Arduino. La página solo muestra la respuesta, la fuente y los gestos; no mueve los servos ella sola.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo funciona la memoria de respuestas?",
+    "respuesta": "Primero busco en una memoria de conocimientos ya revisados. Si no está ahí, busco si esa misma pregunta ya se respondió antes. Si tampoco, le pido el texto a un modelo de lenguaje. Esa memoria es local: se llama Milvus y vive en la misma máquina.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué modelo de lenguaje usas?",
+    "respuesta": "Si hay clave y conexión, respondo con OpenAI. Si no hay clave o esa llamada falla, respondo con Gemma en la propia Jetson. La voz puede seguir otro camino, pero el texto sale de una de esas dos opciones.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿El robot funciona sin internet?",
+    "respuesta": "La visión, el micrófono, la memoria y Gemma funcionan en la placa, sin nube. La voz local usa Piper o espeak. OpenAI, para el texto o para la voz, sí necesita conexión y clave. Sin eso, sigo en local.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Hay latencia entre la pregunta y la respuesta?",
+    "respuesta": "Sí hay espera: detecto, a veces describo la imagen, busco o genero el texto, hablo y encolo el gesto. No tengo una cifra pública de esos segundos. Si ya estoy respondiendo, digo que sigo en ello y no mezclo dos preguntas.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo es el flujo desde el audio hasta el movimiento?",
+    "respuesta": "El micrófono oye, detecta que hay voz y pasa el audio a texto con Vosk. Ese texto sigue el mismo camino que una pregunta escrita. Salen el texto de la respuesta y hasta tres gestos. La voz los dice y el cuerpo los ejecuta en orden.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué pasa si te hablan dos personas a la vez?",
+    "respuesta": "Elijo a quien tenga mayor confianza en la detección. Si empatan, me quedo con el identificador menor. Atiendo una sola pregunta; la otra espera.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Guardas el nombre de quien pregunta?",
+    "respuesta": "En la memoria de conversaciones no guardo el nombre. Si no te reconocí, tampoco digo «persona no identificada» en voz alta.\n\n## Movimientos",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo se programan y ejecutan las secuencias de movimiento?",
+    "respuesta": "Cada gesto es un archivo JSON grabado en el estudio web. Tiene una pista normal y otra neutra, para volver a una postura de reposo. Al responder, pido la lista de gestos completos y solo uso esos identificadores.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo se traduce un identificador de movimiento en acción física?",
+    "respuesta": "El número es el id de una secuencia cargada. Robótica lee sus bloques, los envía al Arduino Mega y las PCA mueven los servos en los tiempos guardados. Si el id no vino en la lista de esa pregunta, no se ejecuta.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Los movimientos son pregrabados o se generan en el momento?",
+    "respuesta": "Son pregrabados. No invento una pose nueva al responder. Si la lista viene vacía, hablo y no me muevo.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo se sincroniza el movimiento con la respuesta hablada?",
+    "respuesta": "Empiezo a hablar y encolo los gestos. No espero a que el brazo termine para seguir la frase. Cada gesto hace su pista normal, espera un segundo, pasa a la pista neutra y espera otro segundo.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Hay control de seguridad para evitar movimientos peligrosos?",
+    "respuesta": "Puedo detenerme con la orden de parada, y también se corta el movimiento si se desconecta el puerto del Arduino. No tengo un sensor que frene solo ante un obstáculo o ante una persona cerca.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué es el estudio de movimientos?",
+    "respuesta": "Es una página donde el equipo graba y describe las secuencias. Al crearlas, queda guardada la frase que explica el gesto. Yo, al conversar, solo recibo las que ya están completas.\n\n## Voz",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo conviertes la voz a texto?",
+    "respuesta": "Uso Vosk, en la Jetson. No uso Whisper ni el reconocimiento de voz de Google.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo generas la voz de salida?",
+    "respuesta": "Si hay conexión y clave, la voz puede salir con OpenAI. Si no, uso Piper y, si ese modelo no está, espeak en español.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Detectas cuándo alguien te habla?",
+    "respuesta": "No uso una palabra de activación comercial. Un detector de actividad de voz marca cuándo hay habla. Si la frase es demasiado corta, pido que la repitan.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Puedo escribirte en lugar de hablar?",
+    "respuesta": "Sí. El chat de la página envía la pregunta por el mismo camino que el micrófono.\n\n## Decisiones y límites",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Por qué se eligió esta arquitectura?",
+    "respuesta": "Para no meter visión, voz, página y servos en un solo programa. Así cada parte se corrige aparte y se hablan por mensajes. La página no necesita saber cómo late un servo.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué desafíos técnicos han sido los más difíciles?",
+    "respuesta": "Correr varios modelos en una Jetson de 8 GB, atender una sola pregunta bien hecha, y no mover un gesto que no esté cargado. También seguir respondiendo cuando no hay internet.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué limitaciones de hardware y software hay?",
+    "respuesta": "No esquivo obstáculos. No tengo sensores de proximidad. Atiendo una pregunta a la vez. Si la descripción de la imagen falla, respondo igual, sin esa pista. El número de gestos es el catálogo cargado, no una lista fija. Con uso muy seguido, los movimientos se pueden desincronizar.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué mejorarían con más recursos?",
+    "respuesta": "Haría falta más margen de memoria en la placa y una medición pública del tiempo de punta a punta. Hoy no tengo esa cifra para darte.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo se mantiene y se escala el sistema?",
+    "respuesta": "Cada programa vive en su repositorio. Se puede cambiar la página, la voz o el modelo de lenguaje sin rehacer la detección. Los gestos nuevos entran por el estudio, como una secuencia más, sin reprogramar el turno.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Cómo prueban que el robot funciona?",
+    "respuesta": "El equipo prueba las secuencias en el cuerpo. El software tiene pruebas automáticas de la cola de movimientos, del chat y de las respuestas. No tengo registro de una prueba formal con visitantes.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Qué métricas de desempeño manejan?",
+    "respuesta": "En el entrenamiento del detector, el informe del semillero registró una precisión de cerca de 0,85 y un recall de cerca de 0,95 sobre las imágenes de prueba. Eso mide ese modelo, no el tiempo de una conversación completa. No manejo una métrica pública de latencia ni de fallos con usuarios.",
+    "movimientos": []
+  },
+  {
+    "pregunta": "¿Han hecho pruebas con usuarios reales?",
+    "respuesta": "No tengo registro de un estudio con usuarios. Las imágenes del detector salieron del semillero, y las secuencias se prueban en el propio robot.",
+    "movimientos": []
   }
 ]
