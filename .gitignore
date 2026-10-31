@@ -223,10 +223,12 @@ dataset/set.zip
 *.env
 
 # Milvus Lite: lo que el proceso escribe al buscar o indexar.
-# schema.json y manifest.json sí se versionan.
+# Los manifiestos apuntan a segmentos locales. La colección la crea el arranque
+# y conocimiento se siembra desde preguntas_respuestas.json.
 *.hnsw.idx
 *.arrow
 **/androide_milvus.db/**/*.parquet
+**/androide_milvus.db/**/manifest.json
 **/androide_milvus.db/**/manifest.json.prev
 **/androide_milvus.db/LOCK
 **/androide_milvus.db/.database-staging/
